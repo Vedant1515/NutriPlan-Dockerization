@@ -2,16 +2,23 @@ const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const passport = require('passport');
+const path = require('path');
+
 const authRoutes = require('./routes/authRoutes');
 const initPassport = require('./config/passport');
 const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 
+// MongoDB connection
 mongoose.connect("mongodb://localhost:27017/nutriplan")
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error(err));
-
+  app.get('/register', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'register.html'));
+  });
+  
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -25,7 +32,17 @@ app.use(passport.initialize());
 app.use(passport.session());
 initPassport(passport);
 
+// ✅ Serve static files from /public
+app.use(express.static(path.join(__dirname, 'public')));
+
+// ✅ Serve login.html at root
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'login.html'));
+});
+
+// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 
-app.listen(3000, () => console.log('Server running on port 3000'));
+// Start server
+app.listen(3000, () => console.log('Server running on http://localhost:3000'));
