@@ -92,4 +92,49 @@ body {
     font-weight: bold;
     color: black;
   }
+  .logout-button {
+    margin-left: auto;
+    margin-right: 20px;
+  }
+  
+  .logout-button a {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 1em;
+  }
+  
+  .info-form h2 {
+    text-align: left;
+    color: #66bb45;
+    margin-top: 20px;
+    font-size: 1.4em;
+  }
+  
+  .row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .input-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+  
+  .input-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-align: left;
+  }
+  
+  .input-group input,
+  .input-group select {
+    padding: 12px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
   
