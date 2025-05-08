@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>NutriPlan Auth</title>
-  <link rel="stylesheet" href="/css/styles.css">
-
+  <link rel="stylesheet" href="/css/styles.css"/>
 </head>
 <body>
   <div class="container">
@@ -40,6 +39,8 @@
   </div>
 
   <script>
+    "use strict";
+
     function toggleForm(form) {
       document.getElementById('login-form').classList.toggle('hidden', form !== 'login');
       document.getElementById('register-form').classList.toggle('hidden', form !== 'register');
@@ -47,37 +48,61 @@
 
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const formData = new FormData(e.target);
+      const form = e.target;
+      const formData = new FormData(form);
       const body = Object.fromEntries(formData.entries());
 
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
 
-      const data = await res.json();
-      alert(data.message);
+        const data = await res.json();
+
+        if (!res.ok) {
+          if (res.status === 404 || data.message.toLowerCase().includes("not found")) {
+            alert("User does not exist. Please register.");
+          } else {
+            alert(data.message || "Login failed.");
+          }
+          return;
+        }
+
+        alert(data.message);
+        window.location.href = "/info";
+      } catch (error) {
+        console.error("Login error:", error);
+        alert("An unexpected error occurred during login.");
+      }
     });
 
     document.getElementById('registerForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const formData = new FormData(e.target);
+      const form = e.target;
+      const formData = new FormData(form);
       const body = Object.fromEntries(formData.entries());
 
       if (body.password !== body.confirmPassword) {
         return alert('Passwords do not match');
       }
 
-      const res = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
+      try {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
 
-      const data = await res.json();
-      alert(data.message);
-      if (res.ok) toggleForm('login');
+        const data = await res.json();
+        alert(data.message);
+
+        if (res.ok) toggleForm('login');
+      } catch (error) {
+        console.error("Registration error:", error);
+        alert("An unexpected error occurred during registration.");
+      }
     });
   </script>
 </body>
