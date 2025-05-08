@@ -64,6 +64,11 @@ app.get('/info', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'info.html'));
 });
 
+app.get('/homepage', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'homepage.html'));
+});
+
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
