@@ -1,0 +1,84 @@
+<!-- views/dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - NutriPlan</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="/images/NutriPlanlogo.png" alt="NutriPlan Logo" class="logo-img">
+        <h2>NutriPlan</h2>
+      </div>
+      <div class="user-info">
+        <img src="/images/user.png" alt="User" class="user-avatar">
+        <p>Hello! Michael</p>
+        <small>user@gmail.com</small>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="/dashboard" class="active">Dashboard</a>
+        <a href="#">Meal Plans</a>
+        <a href="#">Nutrition</a>
+        <a href="#">Grocery List</a>
+        <a href="#">Profile</a>
+        <a href="#">Update Preferences</a>
+        <a href="/" class="logout">Log out</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <div class="dashboard-metrics">
+        <div class="metric-box">
+          <p>Today's Calories</p>
+          <strong>1800 kcal</strong>
+        </div>
+        <div class="metric-box">
+          <p>Recipes Saved</p>
+          <strong>12</strong>
+        </div>
+        <div class="metric-box">
+          <p>Calorie Consumption</p>
+          <strong>2.5 Litres, 1300 kcal</strong>
+        </div>
+      </div>
+
+      <section class="recent-recipes">
+        <div class="section-header">
+          <h3>Recently added recipes</h3>
+          <a href="#" class="view-all">View all</a>
+        </div>
+        <div class="recipe-list">
+          <div class="recipe-card">
+            <img src="/images/salad.jpg" alt="Salad">
+            <div>
+              <h4>Carrot & Mixed Bean Salad with Tahini Dressing</h4>
+              <p><span>🕒 15 minutes</span> <span>🥕 10 ingredients</span></p>
+            </div>
+          </div>
+
+          <div class="recipe-card">
+            <img src="/images/horchata.jpg" alt="Horchata">
+            <div>
+              <h4>Horchata</h4>
+              <p><span>🕒 1 hour 30 minutes</span> <span>🥛 12 ingredients</span></p>
+            </div>
+          </div>
+
+          <div class="recipe-card">
+            <img src="/images/stew.jpg" alt="Stew">
+            <div>
+              <h4>Dominican Chicken Stew</h4>
+              <p><span>🕒 8 hours 20 minutes</span> <span>🍗 9 ingredients</span></p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
