@@ -34,7 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // ✅ Serve the NutriPlan landing page at root
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'homepage.html'));
+  res.sendFile(path.join(__dirname, 'views', 'dashboard.html'));
 });
 
 // Optional: Register page
@@ -45,11 +45,6 @@ app.get('/register', (req, res) => {
 app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'login.html'));
 });
-
-app.get('/dashboard', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'dashboard.html'));
-});
-
 
 app.get('/dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'dashboard.html'));
