@@ -14,10 +14,7 @@ const app = express();
 mongoose.connect("mongodb://localhost:27017/nutriplan")
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error(err));
-  app.get('/register', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'register.html'));
-  });
-  
+
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -32,13 +29,27 @@ app.use(passport.initialize());
 app.use(passport.session());
 initPassport(passport);
 
-// ✅ Serve static files from /public
+// ✅ Serve static files from /public (CSS, JS, images)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ✅ Serve login.html at root
+// ✅ Serve the NutriPlan landing page at root
 app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'homepage.html'));
+});
+
+// Optional: Register page
+app.get('/register', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'register.html'));
+});
+
+app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'login.html'));
 });
+
+app.get('/dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'dashboard.html'));
+});
+
 
 // Routes
 app.use('/api/auth', authRoutes);
