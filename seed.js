@@ -8,7 +8,7 @@ mongoose.connect("mongodb://localhost:27017/nutriplan").then(async () => {
     firstName: 'Test',
     lastName: 'User',
     email: 'test@nutriplan.com',
-    password: await require('bcrypt').hash('password123', 10),
+    password: await require('bcryptjs').hash('password123', 10),
     age: 30,
     height: 170,
     weight: 65,

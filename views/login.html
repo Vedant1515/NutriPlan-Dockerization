@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NutriPlan Auth</title>
+  <link rel="stylesheet" href="/css/styles.css">
+
+</head>
+<body>
+  <div class="container">
+    <div id="login-form" class="form-container">
+      <h2><span class="highlight">Welcome</span> Back!</h2>
+      <p>Login to get started</p>
+      <form id="loginForm">
+        <input type="email" name="email" placeholder="Enter your email" required>
+        <input type="password" name="password" placeholder="Enter your password" required>
+        <button type="submit">Login</button>
+      </form>
+      <p class="link-text">Don't have an account? <a href="#" onclick="toggleForm('register')">Register here</a></p>
+    </div>
+
+    <div id="register-form" class="form-container hidden">
+      <h2>Register</h2>
+      <form id="registerForm">
+        <input type="text" name="firstName" placeholder="Enter your first name" required>
+        <input type="text" name="lastName" placeholder="Enter your last name" required>
+        <input type="email" name="email" placeholder="Enter your email" required>
+        <input type="password" name="password" placeholder="Enter your password" required>
+        <input type="password" name="confirmPassword" placeholder="Confirm your password" required>
+        <button type="submit">Register</button>
+      </form>
+      <p class="link-text">Already have an account? <a href="#" onclick="toggleForm('login')">Login here</a></p>
+    </div>
+
+    <footer>
+      <a href="#">Terms & Conditions</a>
+      <a href="#">Privacy Policy</a>
+    </footer>
+  </div>
+
+  <script>
+    function toggleForm(form) {
+      document.getElementById('login-form').classList.toggle('hidden', form !== 'login');
+      document.getElementById('register-form').classList.toggle('hidden', form !== 'register');
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const body = Object.fromEntries(formData.entries());
+
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+
+      const data = await res.json();
+      alert(data.message);
+    });
+
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const body = Object.fromEntries(formData.entries());
+
+      if (body.password !== body.confirmPassword) {
+        return alert('Passwords do not match');
+      }
+
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+
+      const data = await res.json();
+      alert(data.message);
+      if (res.ok) toggleForm('login');
+    });
+  </script>
+</body>
+</html>
