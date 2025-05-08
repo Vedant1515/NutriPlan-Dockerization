@@ -29,7 +29,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 initPassport(passport);
 
-// ✅ Serve static files from /public (CSS, JS, images)
+// Serve static files (CSS, images, etc.) (CSS, JS, images)
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ✅ Serve the NutriPlan landing page at root
@@ -51,7 +51,20 @@ app.get('/dashboard', (req, res) => {
 });
 
 
-// Routes
+app.get('/dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'dashboard.html'));
+});
+
+
+app.get('/register', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'register.html'));
+});
+
+app.get('/info', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'info.html'));
+});
+
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 
