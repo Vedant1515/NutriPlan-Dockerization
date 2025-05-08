@@ -50,6 +50,11 @@ app.get('/dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'dashboard.html'));
 });
 
+app.get('/faq', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'faq.html'));
+});
+
+
 
 // Routes
 app.use('/api/auth', authRoutes);
