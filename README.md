@@ -1,72 +1,82 @@
-NutriPlan – Meal Planning & Nutrition App
+# NutriPlan – Meal Planning & Nutrition App
 
-Overview
-NutriPlan is a full-stack web application that simplifies personalized meal planning and grocery list creation. This repository contains the complete implementation using Node.js, Express, HTML, CSS, and MongoDB. It also includes detailed setup instructions, design principles, and validation standards to support effective collaboration and high code quality.
+## Overview
 
-Getting Started
-Prerequisites
+**NutriPlan** is a full-stack web application that simplifies personalized meal planning and grocery list creation. This repository contains the complete implementation using Node.js, Express, HTML, CSS, and MongoDB. It also includes detailed setup instructions, design principles, and validation standards to support effective collaboration and high code quality.
+
+## Getting Started
+
+### Prerequisites
+
 Before running this project locally, ensure the following tools and technologies are installed:
 
-Node.js (v16 or higher)
+- Node.js (v16 or higher)
+- npm (comes with Node.js)
+- MongoDB (local instance or MongoDB Atlas)
+- Git
 
-npm (comes with Node.js)
+### Installation
 
-MongoDB (local instance or MongoDB Atlas)
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/your-username/nutriplan.git
+   cd nutriplan
+   ```
 
-Git
+2. **Install project dependencies**
+   ```bash
+   npm install
+   ```
 
-Installation
-Clone the repository
-git clone https://github.com/your-username/nutriplan.git
-cd nutriplan
+3. **Set up environment variables**
 
-Install project dependencies
-npm install
+   Create a `.env` file in the root directory and configure the following:
 
+   ```
+   PORT=3000
+   MONGO_URI=your_mongodb_connection_string
+   ```
 
-Set up environment variables
+4. **Start the server**
+   ```bash
+   node server.js
+   ```
 
-Create a .env file in the root directory and configure the following:
+5. **Access the application**
 
-PORT=3000
-MONGO_URI=your_mongodb_connection_string
+   Open your browser and navigate to: `http://localhost:3000`
 
-Start the server
+## Technology Stack
 
-node server.js
+- **Frontend**: HTML, CSS, JavaScript  
+- **Backend**: Node.js, Express  
+- **Database**: MongoDB (Mongoose)  
+- **Testing**: Cypress (End-to-End)  
+- **Configuration**: dotenv  
 
-Access the application
+## User Input Validation Rules
 
-Open your browser and navigate to: http://localhost:3000
+- **Email**: Must be a valid email format (e.g., `user@example.com`)
+- **Password**: Minimum 8 characters, with at least one number and one special character
+- **Meal Preferences**: Required selection from available options
+- **Grocery List Items**: Must be generated from the meal plan or validated manually
 
+## Contributing
 
-
-Technology Stack
-Frontend  - 	HTML, CSS, JavaScript
-Backend   - 	Node.js, Express
-Database  - 	MongoDB (Mongoose)
-Testing	  -     Cypress (End-to-End)
-Configuration - dotenv
-
-
-User Input Validation Rules
-Email: Must be a valid email format (e.g., user@example.com)
-
-Password: Minimum 8 characters, with at least one number and one special character
-
-Meal Preferences: Required selection from available options
-
-Grocery List Items: Must be generated from meal plan or validated manually
-
-Contributing
 To contribute to this project:
 
-Fork the repository and clone your fork.
+1. Fork the repository and clone your fork.
+2. Create a feature branch:
+   ```bash
+   git checkout -b feature-name
+   ```
+3. Commit your changes following best practices and standards.
+4. Push the branch to your fork:
+   ```bash
+   git push origin feature-name
+   ```
+5. Open a pull request describing your changes.
 
-Create a feature branch (git checkout -b feature-name).
+## License
 
-Commit your changes following best practices and standards.
-
-Push the branch to your fork (git push origin feature-name).
-
-Open a pull request describing your changes.
+This project is licensed under the MIT License. See the `LICENSE` file for details.
