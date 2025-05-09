@@ -221,3 +221,108 @@ body {
   font-size: 14px;
   color: #666;
 }
+/* Home Page CSS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;
+}
+body {
+  background: #f9fdf9;
+  color: #333;
+  line-height: 1.6;
+}
+header {
+  background: #a8e063;
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+header h1 {
+  font-size: 24px;
+  font-weight: 700;
+}
+nav a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #000;
+  font-weight: 600;
+}
+.btn-download {
+  background: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  color: #000;
+  text-decoration: none;
+}
+.hero {
+  text-align: center;
+  background-image: url('hero.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: 80px 20px;
+}
+.hero h2 {
+  font-size: 36px;
+  color: #2e7d32;
+  margin-bottom: 20px;
+}
+.hero p {
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+.btn-started {
+  background: #a8e063;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+}
+section {
+  padding: 60px 40px;
+}
+section h3 {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 28px;
+}
+.cards {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  text-align: center;
+}
+.card img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+footer {
+  background: #c5f1ac;
+  padding: 30px 20px;
+  text-align: center;
+  font-size: 14px;
+}
+footer a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #000;
+  font-weight: 600;
+}
+ 
