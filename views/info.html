@@ -201,9 +201,11 @@
 
         const data = await res.json();
         alert(data.message);
+        if (res.ok) window.location.href = "/dashboard";
+
       } catch (err) {
         console.error("Error saving info:", err);
-        alert("Something went wrong while saving your info.");
+        alert("Something went wr  ong while saving your info.");
       }
     });
   </script>
