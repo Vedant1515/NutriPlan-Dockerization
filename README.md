@@ -80,3 +80,118 @@ To contribute to this project:
 ## License
 
 This project is licensed under the MIT License. See the `LICENSE` file for details.
+
+## API Documentation
+
+BASE URL: http://localhost:3000/api
+
+
+### Auth Routes
+
+1. User Registration : POST /auth/register
+
+Request Body:
+{
+    "password":"abc123",
+    "email":"suba@mail.com",
+    "firstName":"suba",
+    "lastName":"Thinakaran"
+}
+Response: 201
+{
+    "message": "Registered successfully"
+}
+
+2. User Login: POST /auth/login 
+
+Request Body:
+{
+    "password":"abc123",
+    "email":"suba@mail.com"
+}
+Response: 201
+{
+    "message": "Login successful",
+    "user": {
+        "_id": "681abc50085517721f9c91b4",
+        "firstName": "suba",
+        "lastName": "Thinakaran",
+        "email": "suba@mail.com",
+        "password": "$2b$10$eM.we1yqKp/tEfWp7YuCvOH3pg/KMZrB33ZXE8woAWY1FiC0Vkg6O",
+        "__v": 0
+    }
+}
+
+3. Save User Preferences: POST /user/save
+
+Request Body:
+{
+    "email": "suba@mail.com",
+    "age": 25,
+    "height": 168,
+    "weight": 58,
+    "gender": "female",
+    "dietType": "vegetarian",
+    "allergies": [
+        "nuts"
+    ],
+    "mealsPerDay": ,
+    "activityLevel": "low",
+    "goal": "weight loss"
+}
+Response: 201
+{
+    "message": "User updated successfully"
+}
+
+4. Generate meal plan: POST /meals/generate
+
+Request Body:
+{
+    "email": "suba@mail.com"
+}
+Response: 201
+{
+    "mealPlan": [
+        {
+            "nutrients": {
+                "protein": "24g",
+                "fat": "14g",
+                "carbs": "70g"
+            },
+            "_id": "68204234bb91841f6d557425",
+            "name": "Tofu Veggie Bowl",
+            "diet": "vegetarian",
+            "calories": 820,
+            "ingredients": [
+                "tofu",
+                "broccoli",
+                "brown rice",
+                "carrots",
+                "soy sauce"
+            ],
+            "instructions": "Cook brown rice. Stir-fry tofu and vegetables. Combine and drizzle with soy sauce."
+        },
+        {
+            "nutrients": {
+                "protein": "18g",
+                "fat": "12g",
+                "carbs": "85g"
+            },
+            "_id": "68204234bb91841f6d557426",
+            "name": "Grilled Vegetable Quinoa Salad",
+            "diet": "vegetarian",
+            "calories": 740,
+            "ingredients": [
+                "quinoa",
+                "zucchini",
+                "bell peppers",
+                "olive oil",
+                "lemon juice"
+            ],
+            "instructions": "Grill vegetables. Cook quinoa. Toss all with olive oil and lemon juice."
+        }
+    ],
+    "totalCalories": 1612.8
+}
+
