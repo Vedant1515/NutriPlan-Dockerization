@@ -7,6 +7,7 @@ const path = require('path');
 const authRoutes = require('./routes/authRoutes');
 const initPassport = require('./config/passport');
 const userRoutes = require('./routes/userRoutes');
+const mealRoutes = require('./routes/mealRoutes');
 
 const app = express();
 
@@ -72,6 +73,7 @@ app.get('/homepage', (req, res) => {
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/meals', mealRoutes);
 
 // Start server
 app.listen(3000, () => console.log('Server running on http://localhost:3000'));

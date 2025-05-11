@@ -8,8 +8,10 @@ const userSchema = new mongoose.Schema({
   age: Number,
   height: Number,
   weight: Number,
-  bmi: Number,
+  gender: String,
   dietType: String,
+  allergies: [String],
+  mealsPerDay: Number,
   goalType: String,
   activityLevel: String
 });

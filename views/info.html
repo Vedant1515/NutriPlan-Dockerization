@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -67,6 +68,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <form class="info-form" id="infoForm">
@@ -84,26 +86,52 @@
 
       <div class="row">
         <div class="input-group">
-          <label for="bmi">BMI</label>
-          <input type="text" name="bmi" required>
-        </div>
-        <div class="input-group">
           <label for="weight">Weight (kg)</label>
           <input type="number" name="weight" placeholder="e.g. 70" required>
         </div>
+        <div class="input-group">
+          <label for="gender">Gender</label>
+          <select name="gender" required>
+            <option value="">Select</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+
       </div>
 
       <h2>Dietary Preferences</h2>
-      <div class="input-group">
-        <label for="dietType">Diet Type</label>
-        <select name="dietType" required>
-          <option value="">Select</option>
-          <option value="vegetarian">Vegetarian</option>
-          <option value="vegan">Vegan</option>
-          <option value="keto">Keto</option>
-          <option value="paleo">Paleo</option>
-          <option value="balanced">Balanced</option>
-        </select>
+      <div class="row">
+        <div class="input-group">
+          <label for="dietType">Diet Type</label>
+          <select name="dietType" required>
+            <option value="">Select</option>
+            <option value="vegetarian">Vegetarian</option>
+            <option value="vegan">Vegan</option>
+            <option value="keto">Keto</option>
+            <option value="paleo">Paleo</option>
+            <option value="balanced">Balanced</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>Allergies</label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="allergies" value="nuts"> Nuts</label>
+            <label><input type="checkbox" name="allergies" value="dairy"> Dairy</label>
+            <label><input type="checkbox" name="allergies" value="gluten"> Gluten</label>
+            <label><input type="checkbox" name="allergies" value="soy"> Soy</label>
+            <label><input type="checkbox" name="allergies" value="shellfish"> Shellfish</label>
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="mealsPerDay">Meals Per Day</label>
+          <select name="mealsPerDay" required>
+            <option value="">Select</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+        </div>
       </div>
 
       <h2>Goals</h2>
@@ -135,26 +163,42 @@
   <script>
     "use strict";
 
-  document.getElementById('infoForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const formData = new FormData(form);
-    const body = Object.fromEntries(formData.entries());
+    document.getElementById('infoForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+      const body = Object.fromEntries(formData.entries());
 
-    try {
-      const res = await fetch('/api/user/save', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
+      // Convert allergies checkboxes to an array
+      const allergies = [...form.querySelectorAll('input[name="allergies"]:checked')]
+        .map(cb => cb.value);
+      body.allergies = allergies;
 
-      const data = await res.json();
-      alert(data.message);
-    } catch (err) {
-      console.error("Error saving info:", err);
-      alert("Something went wrong while saving your info.");
-    }
-  });
+      // Convert types
+      body.age = Number(body.age);
+      body.weight = Number(body.weight);
+      body.height = Number(body.height);
+      body.mealsPerDay = Number(body.mealsPerDay);
+
+      // Normalize goal field
+      body.goal = body.goalType.replace('_', ' ');
+      delete body.goalType;
+
+      try {
+        const res = await fetch('/api/user/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+
+        const data = await res.json();
+        alert(data.message);
+      } catch (err) {
+        console.error("Error saving info:", err);
+        alert("Something went wrong while saving your info.");
+      }
+    });
   </script>
 </body>
+
 </html>
