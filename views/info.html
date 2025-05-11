@@ -184,6 +184,14 @@
       body.goal = body.goalType.replace('_', ' ');
       delete body.goalType;
 
+      // ✅ Retrieve and include email
+      const email = localStorage.getItem("nutriplanEmail");
+      if (!email) {
+        alert("User email not found. Please login again.");
+        return window.location.href = "/login.html"; // or your login path
+      }
+      body.email = email;
+
       try {
         const res = await fetch('/api/user/save', {
           method: 'POST',
