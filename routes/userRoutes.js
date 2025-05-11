@@ -16,6 +16,7 @@ router.post('/save', async (req, res) => {
     
         if (!updatedUser) {
           console.log('User not found.');
+          res.status(404).json({ message: 'User not found'});
         } else {
           console.log('User updated successfully:', updatedUser);
           res.status(201).json({ message: 'User updated successfully'});
