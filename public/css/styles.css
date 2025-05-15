@@ -228,11 +228,13 @@ body {
   box-sizing: border-box;
   font-family: 'Open Sans', sans-serif;
 }
+
 body {
   background: #f9fdf9;
   color: #333;
   line-height: 1.6;
 }
+
 header {
   background: #a8e063;
   padding: 20px 40px;
@@ -243,40 +245,62 @@ header {
   top: 0;
   z-index: 1000;
 }
-header h1 {
-  font-size: 24px;
-  font-weight: 700;
-}
+
 nav a {
   margin: 0 10px;
   text-decoration: none;
   color: #000;
   font-weight: 600;
 }
-.btn-download {
+
+/* .btn-download {
   background: white;
   padding: 10px 20px;
   border-radius: 10px;
   font-weight: bold;
   color: #000;
   text-decoration: none;
-}
+} */
+
 .hero {
   text-align: center;
-  background-image: url('hero.jpg');
+  background-image: url('/images/hero.jpg');
   background-size: cover;
   background-position: center;
-  padding: 80px 20px;
+  padding: 140px 20px;
+  color: #fff;
 }
-.hero h2 {
-  font-size: 36px;
-  color: #2e7d32;
-  margin-bottom: 20px;
+
+.hero-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+
+  background: linear-gradient(to right, #10e26b, #6bbe5f);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
 }
-.hero p {
-  font-size: 20px;
+
+
+
+.hero .subtitle {
+  font-size: 22px;
+  margin: 15px 0;
+  font-weight: bold;
+  color: white;
+}
+
+.hero .description {
   margin-bottom: 30px;
+  font-size: 18px;
 }
+
 .btn-started {
   background: #a8e063;
   padding: 15px 30px;
@@ -286,103 +310,98 @@ nav a {
   cursor: pointer;
   border-radius: 10px;
 }
-section {
+
+.section {
   padding: 60px 40px;
 }
-section h3 {
+
+.section-header-hp {
+  background: linear-gradient(to right, #b5ec8d, #a8e063);
+  display: inline-block;              /* Shrink to fit text */
+  padding: 10px 30px;
+  border-radius: 30px;
+  font-size: 24px;
+  font-weight: bold;
   text-align: center;
-  margin-bottom: 40px;
-  font-size: 28px;
+  margin: 0 auto 40px auto;           /* Center it horizontally */
 }
+
+.section-header-hp-wrapper {
+  text-align: center;
+}
+
+
 .cards {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 30px;
 }
+
 .card {
   background: white;
   padding: 20px;
   border-radius: 10px;
   width: 300px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
+
 .card img {
   width: 100%;
   border-radius: 8px;
   margin-bottom: 15px;
 }
+
+.card ul {
+  text-align: left;
+  margin-top: 10px;
+  padding-left: 20px;
+}
+
+.testimonial-intro {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 40px auto;
+  font-size: 18px;
+  color: #444;
+}
+
+.testimonial-card h4 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #2e7d32;
+}
+
+.btn-secondary, .btn-tertiary {
+  display: inline-block;
+  background: #e9fbe4;
+  color: #2e7d32;
+  padding: 10px 20px;
+  border-radius: 20px;
+  margin-top: 10px;
+  text-decoration: none;
+  font-weight: bold;
+  border: 2px solid #a8e063;
+}
+
+.center-button {
+  text-align: center;
+  margin-top: 30px;
+}
+
 footer {
   background: #c5f1ac;
   padding: 30px 20px;
   text-align: center;
   font-size: 14px;
 }
+
 footer a {
   margin: 0 10px;
   text-decoration: none;
   color: #000;
   font-weight: 600;
 }
+
  
-header {
-  background: #a8e063; /* same green color */
-  padding: 16px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-.logo-container {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.logo {
-  height: 80px;
-  width: auto;
-  vertical-align: middle;
-}
-
-.logo-container h1 {
-  font-size: 22px;
-  font-weight: 700;
-  color: #1b1b1b;
-  margin: 0;
-}
-
-nav {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-nav a {
-  text-decoration: none;
-  font-weight: 600;
-  color: #000;
-  transition: transform 0.2s ease;
-}
-
-nav a:hover {
-  transform: translateY(-2px);
-}
-
-/* Add subtle green gradient background */
-body {
-  background: linear-gradient(to bottom right, #f6fdf7, #e0f7e9);
-}
-
-/* Card hover animation (scale + shadow) */
-.card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-}
-
-.card:hover {
-  transform: scale(1.05) translateY(-5px);
-  box-shadow: 0 12px 25px rgba(139, 195, 74, 0.25); /* Green tone shadow */
-}
