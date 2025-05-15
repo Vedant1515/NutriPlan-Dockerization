@@ -101,6 +101,8 @@
           return;
         }
 
+         // ✅ Save email to localStorage
+        localStorage.setItem("nutriplanEmail", body.email);
         alert(data.message);
         window.location.href = "/info";
       } catch (error) {
