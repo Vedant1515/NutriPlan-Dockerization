@@ -326,3 +326,63 @@ footer a {
   font-weight: 600;
 }
  
+header {
+  background: #a8e063; /* same green color */
+  padding: 16px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  height: 80px;
+  width: auto;
+  vertical-align: middle;
+}
+
+.logo-container h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1b1b1b;
+  margin: 0;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+nav a {
+  text-decoration: none;
+  font-weight: 600;
+  color: #000;
+  transition: transform 0.2s ease;
+}
+
+nav a:hover {
+  transform: translateY(-2px);
+}
+
+/* Add subtle green gradient background */
+body {
+  background: linear-gradient(to bottom right, #f6fdf7, #e0f7e9);
+}
+
+/* Card hover animation (scale + shadow) */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: scale(1.05) translateY(-5px);
+  box-shadow: 0 12px 25px rgba(139, 195, 74, 0.25); /* Green tone shadow */
+}
