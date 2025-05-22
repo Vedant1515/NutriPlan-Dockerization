@@ -279,8 +279,8 @@
         <a href="#">Nutrition</a>
         <a href="#">Grocery List</a>
         <a href="#">Profile</a>
-        <a href="#">Update Preferences</a>
-        <a href="#" class="logout">Log out</a>
+        <a href="/info?update=true">Update Preferences</a>
+        <a href="#" class="logout" onclick="logoutUser()">Log out</a>
       </nav>
     </aside>
 
@@ -352,6 +352,11 @@
   </div>
 
   <script>
+    function logoutUser() {
+      localStorage.removeItem("nutriplanEmail");
+      window.location.href = "/";
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
       const storedEmail = localStorage.getItem("nutriplanEmail") || "user@email.com";
       document.getElementById("userEmail").textContent = storedEmail;
@@ -429,7 +434,6 @@
 
           const container = document.getElementById("mealPlanContainer");
           container.innerHTML = "";
-
           mockMealPlan.forEach(meal => {
             const card = `
               <div class="recipe-card">

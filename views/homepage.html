@@ -11,18 +11,17 @@
 <body>
   <header>
     <div style="display: flex; align-items: center; gap: 10px;">
-    <img src="images/logo.png" alt="NutriPlan Logo" style="height: 40px;" />
-    <h1 style="margin: 0; font-size: 24px; color: #2e7d32;">NutriPlan</h1>
-  </div>
+      <img src="images/logo.png" alt="NutriPlan Logo" style="height: 40px;" />
+      <h1 style="margin: 0; font-size: 24px; color: #2e7d32;">NutriPlan</h1>
+    </div>
     <nav>
       <a href="#how">How it works</a>
       <a href="/dashboard">Dashboard</a>
       <a href="#why">Why NutriPlan</a>
       <a href="/faq">FAQs</a>
-      <a href="/login">Login/Sign up</a>
-      
+      <a id="auth-link" href="/login">Login/Sign up</a>
+
     </nav>
-    <!-- <a href="#" class="btn-download">Download App</a> -->
   </header>
 
   <section class="hero" id="home">
@@ -126,6 +125,7 @@
     </div>
   </section>
 
+  
   <footer>
     <p>
       <a href="#about">About us</a> |
@@ -135,5 +135,20 @@
     </p>
     <p>&copy; 2025 NutriPlan. All rights reserved.</p>
   </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const authLink = document.getElementById("auth-link");
+      const email = localStorage.getItem("nutriplanEmail");
+      if (email) {
+        authLink.textContent = "Logout";
+        authLink.href = "#";
+        authLink.addEventListener("click", () => {
+          localStorage.removeItem("nutriplanEmail");
+          window.location.href = "/";
+        });
+      }
+    });
+  </script>
 </body>
 </html>

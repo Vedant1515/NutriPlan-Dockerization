@@ -135,6 +135,81 @@ mongoose.connect("mongodb://localhost:27017/nutriplan").then(async () => {
       },
       instructions: "Toss cooked noodles with veggies and peanut sauce."
     },
+    {
+      name: "Veggie Pasta Primavera",
+      diet: "vegetarian",
+      allergies: ["gluten"],
+      calories: 480,
+      ingredients: [
+        "penne pasta",
+        "zucchini",
+        "bell peppers",
+        "cherry tomatoes",
+        "parmesan cheese"
+      ],
+      nutrients: {
+        protein: "14g",
+        fat: "10g",
+        carbs: "65g"
+      },
+      instructions: "Cook pasta and sauté vegetables. Mix together and top with cheese.",
+    },
+    {
+      name: "Mushroom Risotto",
+      diet: "vegetarian",
+      allergies: ["dairy"],
+      calories: 440,
+      ingredients: [
+        "arborio rice",
+        "mushrooms",
+        "onion",
+        "vegetable broth",
+        "parmesan cheese"
+      ],
+      nutrients: {
+        protein: "13g",
+        fat: "15g",
+        carbs: "55g"
+      },
+      instructions: "Slowly cook rice with broth and sautéed mushrooms, then stir in cheese.",
+    },
+    {
+      name: "Greek Salad Wrap",
+      diet: "vegetarian",
+      allergies: ["gluten", "dairy"],
+      calories: 360,
+      ingredients: [
+        "whole wheat wrap",
+        "feta cheese",
+        "cucumber",
+        "olives",
+        "tomatoes"
+      ],
+      nutrients: {
+        protein: "10g",
+        fat: "18g",
+        carbs: "35g"
+      },
+      instructions: "Combine ingredients in a wrap and serve cold.",
+    },
+    {
+      name: "Spinach and Feta Omelette",
+      diet: "vegetarian",
+      allergies: ["eggs", "dairy"],
+      calories: 320,
+      ingredients: [
+        "eggs",
+        "spinach",
+        "feta cheese",
+        "olive oil"
+      ],
+      nutrients: {
+        protein: "20g",
+        fat: "22g",
+        carbs: "5g"
+      },
+      instructions: "Whisk eggs and cook with spinach and feta until set.",
+    },
 
     //vegan
     {

@@ -1,153 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>NutriPlan Info Form</title>
-  <link rel="stylesheet" href="/css/styles.css">
-  <style>
-    .info-form {
-      max-width: 600px;
-      margin: 40px auto;
-      padding: 20px;
-      background-color: #fff;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      border-radius: 10px;
-    }
-
-    .info-form h2 {
-      margin-bottom: 15px;
-      color: #66bb45;
-      font-size: 1.4em;
-      border-bottom: 1px solid #e0e0e0;
-      padding-bottom: 5px;
-    }
-
-    .row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin-bottom: 20px;
-    }
-
-    .input-group {
-      flex: 1;
-      min-width: 240px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .input-group label {
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: #333;
-    }
-
-    .input-group input,
-    .input-group select {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 1em;
-    }
-
-    button[type="submit"] {
-      background-color: #66bb45;
-      color: white;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1em;
-      width: 100%;
-    }
-
-    button[type="submit"]:hover {
-      background-color: #5aa63a;
-    }
-  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
 
-<body>
-  <div class="container">
-    <form class="info-form" id="infoForm">
-      <h2>Basic Information</h2>
-      <div class="row">
-        <div class="input-group">
-          <label for="age">Age</label>
-          <input type="number" name="age" placeholder="Enter your age" required>
-        </div>
-        <div class="input-group">
-          <label for="height">Height (cm)</label>
-          <input type="number" name="height" placeholder="e.g. 175" required>
-        </div>
-      </div>
+  <!-- 🔐 Preference Check & Redirect -->
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const email = localStorage.getItem("nutriplanEmail");
+      if (!email) return window.location.href = "/login";
 
-      <div class="row">
-        <div class="input-group">
-          <label for="weight">Weight (kg)</label>
-          <input type="number" name="weight" placeholder="e.g. 70" required>
+      try {
+        const res = await fetch(`/api/user/get?email=${email}`);
+        const data = await res.json();
+        if (res.ok && data.exists && !window.location.href.includes('update=true')) {
+          return window.location.href = "/dashboard";
+        }
+      } catch (err) {
+        console.error("Preference check error", err);
+      }
+    });
+  </script>
+
+  <form id="infoForm" class="bg-white shadow-md rounded-lg p-8 max-w-xl w-full space-y-6">
+    <h2 class="text-2xl font-semibold text-green-600">NutriPlan - Personal Info</h2>
+
+    <!-- Step 1: Basic Information -->
+    <div class="step" id="step1">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block font-medium mb-1">Age</label>
+          <input type="number" name="age" required class="w-full border rounded px-3 py-2" />
         </div>
-        <div class="input-group">
-          <label for="gender">Gender</label>
-          <select name="gender" required>
+        <div>
+          <label class="block font-medium mb-1">Height (cm)</label>
+          <input type="number" name="height" required class="w-full border rounded px-3 py-2" />
+        </div>
+        <div>
+          <label class="block font-medium mb-1">Weight (kg)</label>
+          <input type="number" name="weight" required class="w-full border rounded px-3 py-2" />
+        </div>
+        <div>
+          <label class="block font-medium mb-1">Gender</label>
+          <select name="gender" required class="w-full border rounded px-3 py-2">
             <option value="">Select</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
           </select>
         </div>
-
       </div>
+    </div>
 
-      <h2>Dietary Preferences</h2>
-      <div class="row">
-        <div class="input-group">
-          <label for="dietType">Diet Type</label>
-          <select name="dietType" required>
-            <option value="">Select</option>
-            <option value="vegetarian">Vegetarian</option>
-            <option value="vegan">Vegan</option>
-            <option value="keto">Keto</option>
-            <option value="paleo">Paleo</option>
-            <option value="balanced">Balanced</option>
-          </select>
-        </div>
-        <div class="input-group">
-          <label>Allergies</label>
-          <div class="checkbox-group">
-            <label><input type="checkbox" name="allergies" value="nuts"> Nuts</label>
-            <label><input type="checkbox" name="allergies" value="dairy"> Dairy</label>
-            <label><input type="checkbox" name="allergies" value="gluten"> Gluten</label>
-            <label><input type="checkbox" name="allergies" value="soy"> Soy</label>
-            <label><input type="checkbox" name="allergies" value="shellfish"> Shellfish</label>
-          </div>
-        </div>
-        <div class="input-group">
-          <label for="mealsPerDay">Meals Per Day</label>
-          <select name="mealsPerDay" required>
-            <option value="">Select</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-          </select>
+    <!-- Step 2: Dietary Preferences -->
+    <div class="step hidden" id="step2">
+      <div>
+        <label class="block font-medium mb-1">Diet Type</label>
+        <select name="dietType" required class="w-full border rounded px-3 py-2">
+          <option value="">Select</option>
+          <option value="vegetarian">Vegetarian</option>
+          <option value="vegan">Vegan</option>
+          <option value="keto">Keto</option>
+          <option value="paleo">Paleo</option>
+          <option value="balanced">Balanced</option>
+        </select>
+      </div>
+      <div class="mt-4">
+        <label class="block font-medium mb-2">Allergies</label>
+        <div class="grid grid-cols-2 gap-2">
+          <label><input type="checkbox" name="allergies" value="nuts" class="mr-2"> Nuts</label>
+          <label><input type="checkbox" name="allergies" value="dairy" class="mr-2"> Dairy</label>
+          <label><input type="checkbox" name="allergies" value="gluten" class="mr-2"> Gluten</label>
+          <label><input type="checkbox" name="allergies" value="soy" class="mr-2"> Soy</label>
+          <label><input type="checkbox" name="allergies" value="shellfish" class="mr-2"> Shellfish</label>
         </div>
       </div>
+      <div class="mt-4">
+        <label class="block font-medium mb-1">Meals Per Day</label>
+        <select name="mealsPerDay" required class="w-full border rounded px-3 py-2">
+          <option value="">Select</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
+      </div>
+    </div>
 
-      <h2>Goals</h2>
-      <div class="row">
-        <div class="input-group">
-          <label for="goalType">Goal Type</label>
-          <select name="goalType" required>
+    <!-- Step 3: Goals -->
+    <div class="step hidden" id="step3">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block font-medium mb-1">Goal</label>
+          <select name="goalType" required class="w-full border rounded px-3 py-2">
             <option value="">Select</option>
             <option value="weight_loss">Weight Loss</option>
             <option value="muscle_gain">Muscle Gain</option>
             <option value="maintenance">Maintenance</option>
           </select>
         </div>
-        <div class="input-group">
-          <label for="activityLevel">Activity Level</label>
-          <select name="activityLevel" required>
+        <div>
+          <label class="block font-medium mb-1">Activity Level</label>
+          <select name="activityLevel" required class="w-full border rounded px-3 py-2">
             <option value="">Select</option>
             <option value="low">Low</option>
             <option value="moderate">Moderate</option>
@@ -155,13 +111,45 @@
           </select>
         </div>
       </div>
+    </div>
 
-      <button type="submit">Submit</button>
-    </form>
-  </div>
+    <!-- Navigation Buttons -->
+    <div class="flex justify-between pt-4">
+      <button type="button" id="prevBtn" class="bg-gray-300 px-4 py-2 rounded" disabled>Back</button>
+      <button type="button" id="nextBtn" class="bg-green-500 text-white px-4 py-2 rounded">Next</button>
+      <button type="submit" id="submitBtn" class="bg-green-600 text-white px-4 py-2 rounded hidden">Submit</button>
+    </div>
+  </form>
 
   <script>
-    "use strict";
+    let currentStep = 0;
+    const steps = document.querySelectorAll(".step");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const submitBtn = document.getElementById("submitBtn");
+
+    function showStep(index) {
+      steps.forEach((step, i) => {
+        step.classList.toggle("hidden", i !== index);
+      });
+      prevBtn.disabled = index === 0;
+      nextBtn.classList.toggle("hidden", index === steps.length - 1);
+      submitBtn.classList.toggle("hidden", index !== steps.length - 1);
+    }
+
+    nextBtn.addEventListener("click", () => {
+      if (currentStep < steps.length - 1) {
+        currentStep++;
+        showStep(currentStep);
+      }
+    });
+
+    prevBtn.addEventListener("click", () => {
+      if (currentStep > 0) {
+        currentStep--;
+        showStep(currentStep);
+      }
+    });
 
     document.getElementById('infoForm').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -169,26 +157,21 @@
       const formData = new FormData(form);
       const body = Object.fromEntries(formData.entries());
 
-      // Convert allergies checkboxes to an array
-      const allergies = [...form.querySelectorAll('input[name="allergies"]:checked')]
-        .map(cb => cb.value);
+      const allergies = [...form.querySelectorAll('input[name="allergies"]:checked')].map(cb => cb.value);
       body.allergies = allergies;
 
-      // Convert types
       body.age = Number(body.age);
       body.weight = Number(body.weight);
       body.height = Number(body.height);
       body.mealsPerDay = Number(body.mealsPerDay);
 
-      // Normalize goal field
       body.goal = body.goalType.replace('_', ' ');
       delete body.goalType;
 
-      // ✅ Retrieve and include email
       const email = localStorage.getItem("nutriplanEmail");
       if (!email) {
         alert("User email not found. Please login again.");
-        return window.location.href = "/login.html"; // or your login path
+        return window.location.href = "/login.html";
       }
       body.email = email;
 
@@ -202,13 +185,12 @@
         const data = await res.json();
         alert(data.message);
         if (res.ok) window.location.href = "/dashboard";
-
       } catch (err) {
-        console.error("Error saving info:", err);
-        alert("Something went wr  ong while saving your info.");
+        alert("Something went wrong while saving your info.");
       }
     });
+
+    showStep(currentStep);
   </script>
 </body>
-
 </html>

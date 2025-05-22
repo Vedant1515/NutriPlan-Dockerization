@@ -5,9 +5,9 @@ exports.calculateBMR = ({ weight, height, age, gender }) => {
 };
 
 exports.adjustCalories = (bmr, goal, activity) => {
-  const factor = { sedentary: 1.2, moderate: 1.55, active: 1.75 }[activity] || 1.2;
+  const factor = { low: 1.2, moderate: 1.55, high: 1.75 }[activity] || 1.2;
   const base = bmr * factor;
-  if (goal === 'weight loss') return base - 500;
-  if (goal === 'muscle gain') return base + 500;
+  if (goal === 'weight_loss') return base - 500;
+  if (goal === 'muscle_gain') return base + 500;
   return base;
 };
