@@ -3,6 +3,23 @@ const User = require('../models/user');
 const WeeklyMealPlan = require('../models/weeklyMealPlan');
 const { calculateBMR, adjustCalories } = require('../utils/calculation');
 
+function sumNutrients(meals) {
+    let totalProtein = 0, totalFat = 0, totalCarbs = 0;
+
+    meals.forEach(meal => {
+        const parseGrams = val => parseFloat(val.replace('g', '').trim()) || 0;
+        totalProtein += parseGrams(meal.nutrients?.protein || "0g");
+        totalFat += parseGrams(meal.nutrients?.fat || "0g");
+        totalCarbs += parseGrams(meal.nutrients?.carbs || "0g");
+    });
+
+    return {
+        protein: `${totalProtein}g`,
+        fat: `${totalFat}g`,
+        carbs: `${totalCarbs}g`
+    };
+}
+
 exports.generateMealPlan = async (req, res) => {
     try {
         const user = await User.findOne({ email: req.body.email }).exec();
@@ -15,7 +32,7 @@ exports.generateMealPlan = async (req, res) => {
         const dailyCalorieTarget = targetCalories / user.mealsPerDay;
         const baseMargin = 150;
 
-        // Days of week in order
+        // Get reordered days starting from today
         const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const todayIndex = new Date().getDay();
         const sortedDays = [...daysOfWeek.slice(todayIndex), ...daysOfWeek.slice(0, todayIndex)];
@@ -34,7 +51,7 @@ exports.generateMealPlan = async (req, res) => {
 
             let meals = await Meal.find(query).limit(user.mealsPerDay);
 
-            // Fallback if not enough meals found
+            // Fallback logic
             if (meals.length < user.mealsPerDay) {
                 let fallbackQuery = {
                     diet: user.dietType,
@@ -46,13 +63,17 @@ exports.generateMealPlan = async (req, res) => {
                 meals = await Meal.find(fallbackQuery).limit(user.mealsPerDay);
             }
 
+            const totalCalories = meals.reduce((sum, meal) => sum + meal.calories, 0);
+            const totalNutrients = sumNutrients(meals);
+
             weeklyPlan.push({
                 day,
-                meals
+                meals,
+                totalCalories,
+                totalNutrients
             });
         }
 
-        // Save to DB
         const savedPlan = new WeeklyMealPlan({
             userEmail: user.email,
             dailyPlans: weeklyPlan,
