@@ -6,6 +6,11 @@
   <title>Dashboard - NutriPlan</title>
   <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <!-- added by nafi -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="/js/mealPlanExport.js"></script>
+  <!-- finished adding-->
+
   <style>
     html, body {
       height: 100%;
@@ -182,6 +187,7 @@
       transition: color 0.3s;
     }
 
+
     .view-all:hover {
       color: #4a721b;
       text-decoration: underline;
@@ -234,6 +240,23 @@
       font-size: 14px;
       color: #666;
     }
+
+    
+    #btn-export-mealplan {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+    }
+
+    #btn-export-mealplan:hover {
+    background-color: #45a049;
+    }
+
 
     @media (max-width: 768px) {
       .sidebar {
@@ -288,6 +311,11 @@
       <section class="generate-meal-plan">
         <h2>Your Personalised Meal Plan</h2>
         <button id="generateBtn">Generate Meal Plan</button>
+        <!-- Export Button nafi-->
+        <button id="btn-export-mealplan" class="btn green lighten-1">
+          Export Meal Plan
+        </button>
+
         <div class="date-nav">
           <button id="prevDay">&#8249;</button>
           <span id="dateLabel">Today</span>
