@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
   dietType: String,
   allergies: [String],
   mealsPerDay: Number,
-  goalType: String,
+  goal: String,
   activityLevel: String
 });
 
