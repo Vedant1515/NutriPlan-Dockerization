@@ -1,510 +1,2096 @@
+
 const mongoose = require('mongoose');
-const User = require('./models/user');
 const Meal = require('./models/meals');
 
 mongoose.connect("mongodb://localhost:27017/nutriplan").then(async () => {
   console.log("Connected to MongoDB");
 
-  // await User.create({
-  //   firstName: 'Test',
-  //   lastName: 'User',
-  //   email: 'test5@nutriplan.com',
-  //   password: await require('bcryptjs').hash('password123', 10),
-  //   age: 25,
-  //   height: 168,
-  //   weight: 58,
-  //   gender: "female",
-  //   dietType: "vegetarian",
-  //   allergies: [
-  //     "nuts",
-  //     "dairy"
-  //   ],
-  //   mealsPerDay: 2,
-  //   activityLevel: "low",
-  //   goal: "weight loss"
-  // });
-
   const meals = [
-    //vegetarian
-    {
-      name: "Quinoa Salad",
-      diet: "vegetarian",
-      allergies: ["nuts"],
-      calories: 400,
-      ingredients: ["quinoa", "cucumber", "tomatoes", "olive oil"],
-      nutrients: { protein: "12g", fat: "15g", carbs: "30g" },
-      instructions: "Mix all ingredients and serve cold."
+  {
+    "name": "Paleo Power Meal 101",
+    "diet": "paleo",
+    "allergies": [
+      "soy"
+    ],
+    "calories": 558,
+    "ingredients": [
+      "egg",
+      "spinach",
+      "coconut oil",
+      "carrots",
+      "zucchini"
+    ],
+    "nutrients": {
+      "protein": "17g",
+      "fat": "30g",
+      "carbs": "86g"
     },
-    {
-      name: "Greek Yogurt Parfait",
-      diet: "vegetarian",
-      allergies: ["dairy"],
-      calories: 300,
-      ingredients: ["greek yogurt", "berries", "granola"],
-      nutrients: { protein: "10g", fat: "8g", carbs: "28g" },
-      instructions: "Layer yogurt with berries and granola."
+    "instructions": "Combine egg, spinach, coconut oil, carrots and add zucchini. Cook and serve."
+  },
+  {
+    "name": "Vegetarian Power Meal 102",
+    "diet": "vegetarian",
+    "allergies": [
+      "gluten"
+    ],
+    "calories": 568,
+    "ingredients": [
+      "broccoli",
+      "yogurt",
+      "eggs",
+      "mushrooms",
+      "banana"
+    ],
+    "nutrients": {
+      "protein": "20g",
+      "fat": "16g",
+      "carbs": "20g"
     },
-    {
-      name: "Tofu Veggie Bowl",
-      diet: "vegetarian",
-      allergies: ["soy"],
-      calories: 820,
-      ingredients: ["tofu", "broccoli", "brown rice", "carrots", "soy sauce"],
-      nutrients: {
-        protein: "24g",
-        fat: "14g",
-        carbs: "70g"
-      },
-      instructions: "Cook brown rice. Stir-fry tofu and vegetables. Combine and drizzle with soy sauce."
+    "instructions": "Combine broccoli, yogurt, eggs, mushrooms and add banana. Cook and serve."
+  },
+  {
+    "name": "Vegan Power Meal 103",
+    "diet": "vegan",
+    "allergies": [
+      "soy"
+    ],
+    "calories": 719,
+    "ingredients": [
+      "quinoa",
+      "brown rice",
+      "avocado",
+      "tofu",
+      "spinach"
+    ],
+    "nutrients": {
+      "protein": "36g",
+      "fat": "11g",
+      "carbs": "31g"
     },
-    {
-      name: "Grilled Vegetable Quinoa Salad",
-      diet: "vegetarian",
-      allergies: [],
-      calories: 740,
-      ingredients: ["quinoa", "zucchini", "bell peppers", "olive oil", "lemon juice"],
-      nutrients: {
-        protein: "18g",
-        fat: "12g",
-        carbs: "85g"
-      },
-      instructions: "Grill vegetables. Cook quinoa. Toss all with olive oil and lemon juice."
+    "instructions": "Combine quinoa, brown rice, avocado, tofu and add spinach. Cook and serve."
+  },
+  {
+    "name": "Paleo Power Meal 104",
+    "diet": "paleo",
+    "allergies": [
+      "shellfish"
+    ],
+    "calories": 674,
+    "ingredients": [
+      "coconut oil",
+      "beef",
+      "zucchini",
+      "almond flour",
+      "berries"
+    ],
+    "nutrients": {
+      "protein": "14g",
+      "fat": "20g",
+      "carbs": "86g"
     },
-    {
-      name: "Lentil Soup with Whole Grain Bread",
-      diet: "vegetarian",
-      allergies: [],
-      calories: 620,
-      ingredients: ["lentils", "carrots", "celery", "onions", "whole grain bread"],
-      nutrients: {
-        protein: "20g",
-        fat: "9g",
-        carbs: "85g"
-      },
-      instructions: "Simmer lentils with vegetables. Serve with toasted bread."
+    "instructions": "Combine coconut oil, beef, zucchini, almond flour and add berries. Cook and serve."
+  },
+  {
+    "name": "Balanced Power Meal 105",
+    "diet": "balanced",
+    "allergies": [],
+    "calories": 802,
+    "ingredients": [
+      "toast",
+      "whole wheat wrap",
+      "rice",
+      "cucumber",
+      "hummus"
+    ],
+    "nutrients": {
+      "protein": "21g",
+      "fat": "21g",
+      "carbs": "90g"
     },
-    {
-      name: "Stuffed Bell Peppers",
-      diet: "vegetarian",
-      allergies: ["dairy"],
-      calories: 780,
-      ingredients: ["bell peppers", "rice", "cheddar cheese", "tomatoes", "onions"],
-      nutrients: {
-        protein: "18g",
-        fat: "15g",
-        carbs: "90g"
-      },
-      instructions: "Stuff peppers with rice, cheese, and veggies. Bake until soft."
+    "instructions": "Combine toast, whole wheat wrap, rice, cucumber and add hummus. Cook and serve."
+  },
+  {
+    "name": "Paleo Power Meal 106",
+    "diet": "paleo",
+    "allergies": [
+      "nuts",
+      "soy"
+    ],
+    "calories": 704,
+    "ingredients": [
+      "zucchini",
+      "almond flour",
+      "beef",
+      "coconut oil",
+      "carrots"
+    ],
+    "nutrients": {
+      "protein": "37g",
+      "fat": "12g",
+      "carbs": "65g"
     },
-    {
-      name: "Spinach and Feta Wrap",
-      diet: "vegetarian",
-      allergies: ["dairy", "gluten"],
-      calories: 710,
-      ingredients: ["whole wheat wrap", "spinach", "feta cheese", "hummus"],
-      nutrients: {
-        protein: "16g",
-        fat: "20g",
-        carbs: "65g"
-      },
-      instructions: "Fill wrap with spinach, feta, and hummus. Roll and grill lightly."
+    "instructions": "Combine zucchini, almond flour, beef, coconut oil and add carrots. Cook and serve."
+  },
+  {
+    "name": "Keto Power Meal 107",
+    "diet": "keto",
+    "allergies": [
+      "soy"
+    ],
+    "calories": 665,
+    "ingredients": [
+      "almonds",
+      "cauliflower",
+      "olive oil",
+      "avocado",
+      "chicken"
+    ],
+    "nutrients": {
+      "protein": "12g",
+      "fat": "12g",
+      "carbs": "32g"
     },
-    {
-      name: "Chickpea Curry with Rice",
-      diet: "vegetarian",
-      allergies: [],
-      calories: 800,
-      ingredients: ["chickpeas", "coconut milk", "tomatoes", "spices", "basmati rice"],
-      nutrients: {
-        protein: "22g",
-        fat: "18g",
-        carbs: "95g"
-      },
-      instructions: "Cook chickpeas in coconut curry. Serve over rice."
+    "instructions": "Combine almonds, cauliflower, olive oil, avocado and add chicken. Cook and serve."
+  },
+  {
+    "name": "Vegan Power Meal 108",
+    "diet": "vegan",
+    "allergies": [
+      "dairy"
+    ],
+    "calories": 715,
+    "ingredients": [
+      "brown rice",
+      "avocado",
+      "tofu",
+      "lentils",
+      "tomatoes"
+    ],
+    "nutrients": {
+      "protein": "40g",
+      "fat": "19g",
+      "carbs": "44g"
     },
-    {
-      name: "Peanut Noodle Bowl",
-      diet: "vegetarian",
-      allergies: ["nuts"],
-      calories: 850,
-      ingredients: ["noodles", "peanut sauce", "carrots", "cabbage", "edamame"],
-      nutrients: {
-        protein: "25g",
-        fat: "22g",
-        carbs: "100g"
-      },
-      instructions: "Toss cooked noodles with veggies and peanut sauce."
+    "instructions": "Combine brown rice, avocado, tofu, lentils and add tomatoes. Cook and serve."
+  },
+  {
+    "name": "Keto Power Meal 109",
+    "diet": "keto",
+    "allergies": [],
+    "calories": 767,
+    "ingredients": [
+      "almonds",
+      "olive oil",
+      "avocado",
+      "cauliflower",
+      "chicken"
+    ],
+    "nutrients": {
+      "protein": "24g",
+      "fat": "22g",
+      "carbs": "36g"
     },
-    {
-      name: "Veggie Pasta Primavera",
-      diet: "vegetarian",
-      allergies: ["gluten"],
-      calories: 480,
-      ingredients: [
-        "penne pasta",
-        "zucchini",
-        "bell peppers",
-        "cherry tomatoes",
-        "parmesan cheese"
-      ],
-      nutrients: {
-        protein: "14g",
-        fat: "10g",
-        carbs: "65g"
-      },
-      instructions: "Cook pasta and sauté vegetables. Mix together and top with cheese.",
+    "instructions": "Combine almonds, olive oil, avocado, cauliflower and add chicken. Cook and serve."
+  },
+  {
+    "name": "Keto Power Meal 110",
+    "diet": "keto",
+    "allergies": [
+      "fish"
+    ],
+    "calories": 544,
+    "ingredients": [
+      "cauliflower",
+      "olive oil",
+      "avocado",
+      "cheese",
+      "zucchini noodles"
+    ],
+    "nutrients": {
+      "protein": "29g",
+      "fat": "27g",
+      "carbs": "59g"
     },
-    {
-      name: "Mushroom Risotto",
-      diet: "vegetarian",
-      allergies: ["dairy"],
-      calories: 440,
-      ingredients: [
-        "arborio rice",
-        "mushrooms",
-        "onion",
-        "vegetable broth",
-        "parmesan cheese"
-      ],
-      nutrients: {
-        protein: "13g",
-        fat: "15g",
-        carbs: "55g"
-      },
-      instructions: "Slowly cook rice with broth and sautéed mushrooms, then stir in cheese.",
+    "instructions": "Combine cauliflower, olive oil, avocado, cheese and add zucchini noodles. Cook and serve."
+  },
+  {
+    "name": "Vegan Power Meal 111",
+    "diet": "vegan",
+    "allergies": [],
+    "calories": 587,
+    "ingredients": [
+      "sweet potato",
+      "lentils",
+      "avocado",
+      "tofu",
+      "brown rice"
+    ],
+    "nutrients": {
+      "protein": "38g",
+      "fat": "24g",
+      "carbs": "86g"
     },
-    {
-      name: "Greek Salad Wrap",
-      diet: "vegetarian",
-      allergies: ["gluten", "dairy"],
-      calories: 360,
-      ingredients: [
-        "whole wheat wrap",
-        "feta cheese",
-        "cucumber",
-        "olives",
-        "tomatoes"
-      ],
-      nutrients: {
-        protein: "10g",
-        fat: "18g",
-        carbs: "35g"
-      },
-      instructions: "Combine ingredients in a wrap and serve cold.",
+    "instructions": "Combine sweet potato, lentils, avocado, tofu and add brown rice. Cook and serve."
+  },
+  {
+    "name": "Vegan Power Meal 112",
+    "diet": "vegan",
+    "allergies": [
+      "soy",
+      "dairy"
+    ],
+    "calories": 426,
+    "ingredients": [
+      "sweet potato",
+      "brown rice",
+      "lentils",
+      "spinach",
+      "tofu"
+    ],
+    "nutrients": {
+      "protein": "16g",
+      "fat": "14g",
+      "carbs": "20g"
     },
-    {
-      name: "Spinach and Feta Omelette",
-      diet: "vegetarian",
-      allergies: ["eggs", "dairy"],
-      calories: 320,
-      ingredients: [
-        "eggs",
-        "spinach",
-        "feta cheese",
-        "olive oil"
-      ],
-      nutrients: {
-        protein: "20g",
-        fat: "22g",
-        carbs: "5g"
-      },
-      instructions: "Whisk eggs and cook with spinach and feta until set.",
+    "instructions": "Combine sweet potato, brown rice, lentils, spinach and add tofu. Cook and serve."
+  },
+  {
+    "name": "Vegan Power Meal 113",
+    "diet": "vegan",
+    "allergies": [],
+    "calories": 579,
+    "ingredients": [
+      "spinach",
+      "lentils",
+      "tomatoes",
+      "quinoa",
+      "sweet potato"
+    ],
+    "nutrients": {
+      "protein": "28g",
+      "fat": "14g",
+      "carbs": "21g"
     },
+    "instructions": "Combine spinach, lentils, tomatoes, quinoa and add sweet potato. Cook and serve."
+  },
+  {
+    "name": "Vegetarian Power Meal 114",
+    "diet": "vegetarian",
+    "allergies": [
+      "shellfish",
+      "fish"
+    ],
+    "calories": 429,
+    "ingredients": [
+      "zucchini",
+      "banana",
+      "oats",
+      "eggs",
+      "yogurt"
+    ],
+    "nutrients": {
+      "protein": "35g",
+      "fat": "13g",
+      "carbs": "86g"
+    },
+    "instructions": "Combine zucchini, banana, oats, eggs and add yogurt. Cook and serve."
+  },
+  {
+    "name": "Balanced Power Meal 115",
+    "diet": "balanced",
+    "allergies": [
+      "nuts",
+      "shellfish"
+    ],
+    "calories": 899,
+    "ingredients": [
+      "whole wheat wrap",
+      "turkey",
+      "lettuce",
+      "hummus",
+      "toast"
+    ],
+    "nutrients": {
+      "protein": "31g",
+      "fat": "13g",
+      "carbs": "54g"
+    },
+    "instructions": "Combine whole wheat wrap, turkey, lettuce, hummus and add toast. Cook and serve."
+  },
+  {
+    "name": "Paleo Power Meal 116",
+    "diet": "paleo",
+    "allergies": [
+      "shellfish"
+    ],
+    "calories": 668,
+    "ingredients": [
+      "carrots",
+      "beef",
+      "berries",
+      "zucchini",
+      "egg"
+    ],
+    "nutrients": {
+      "protein": "23g",
+      "fat": "12g",
+      "carbs": "73g"
+    },
+    "instructions": "Combine carrots, beef, berries, zucchini and add egg. Cook and serve."
+  },
+  {
+    "name": "Paleo Power Meal 117",
+    "diet": "paleo",
+    "allergies": [
+      "dairy"
+    ],
+    "calories": 691,
+    "ingredients": [
+      "beef",
+      "zucchini",
+      "coconut oil",
+      "berries",
+      "carrots"
+    ],
+    "nutrients": {
+      "protein": "12g",
+      "fat": "11g",
+      "carbs": "35g"
+    },
+    "instructions": "Combine beef, zucchini, coconut oil, berries and add carrots. Cook and serve."
+  },
+  {
+    "name": "Vegan Power Meal 118",
+    "diet": "vegan",
+    "allergies": [
+      "dairy"
+    ],
+    "calories": 425,
+    "ingredients": [
+      "quinoa",
+      "brown rice",
+      "avocado",
+      "sweet potato",
+      "tomatoes"
+    ],
+    "nutrients": {
+      "protein": "34g",
+      "fat": "28g",
+      "carbs": "64g"
+    },
+    "instructions": "Combine quinoa, brown rice, avocado, sweet potato and add tomatoes. Cook and serve."
+  },
+  {
+    "name": "Vegetarian Power Meal 119",
+    "diet": "vegetarian",
+    "allergies": [
+      "nuts"
+    ],
+    "calories": 751,
+    "ingredients": [
+      "zucchini",
+      "mushrooms",
+      "yogurt",
+      "cheddar",
+      "banana"
+    ],
+    "nutrients": {
+      "protein": "33g",
+      "fat": "15g",
+      "carbs": "88g"
+    },
+    "instructions": "Combine zucchini, mushrooms, yogurt, cheddar and add banana. Cook and serve."
+  },
+  {
+    "name": "Keto Power Meal 120",
+    "diet": "keto",
+    "allergies": [
+      "fish"
+    ],
+    "calories": 460,
+    "ingredients": [
+      "olive oil",
+      "chicken",
+      "avocado",
+      "cheese",
+      "cauliflower"
+    ],
+    "nutrients": {
+      "protein": "25g",
+      "fat": "30g",
+      "carbs": "22g"
+    },
+    "instructions": "Combine olive oil, chicken, avocado, cheese and add cauliflower. Cook and serve."
+  },
+  {
+    "name": "Paleo Power Meal 121",
+    "diet": "paleo",
+    "allergies": [
+      "nuts",
+      "shellfish"
+    ],
+    "calories": 815,
+    "ingredients": [
+      "almond flour",
+      "carrots",
+      "egg",
+      "coconut oil",
+      "spinach"
+    ],
+    "nutrients": {
+      "protein": "21g",
+      "fat": "26g",
+      "carbs": "39g"
+    },
+    "instructions": "Combine almond flour, carrots, egg, coconut oil and add spinach. Cook and serve."
+  },
+  {
+    "name": "Vegan Power Meal 122",
+    "diet": "vegan",
+    "allergies": [
+      "gluten"
+    ],
+    "calories": 456,
+    "ingredients": [
+      "tomatoes",
+      "lentils",
+      "spinach",
+      "sweet potato",
+      "quinoa"
+    ],
+    "nutrients": {
+      "protein": "35g",
+      "fat": "11g",
+      "carbs": "55g"
+    },
+    "instructions": "Combine tomatoes, lentils, spinach, sweet potato and add quinoa. Cook and serve."
+  },
+  {
+    "name": "Paleo Power Meal 123",
+    "diet": "paleo",
+    "allergies": [
+      "fish",
+      "eggs"
+    ],
+    "calories": 512,
+    "ingredients": [
+      "zucchini",
+      "almond flour",
+      "carrots",
+      "spinach",
+      "beef"
+    ],
+    "nutrients": {
+      "protein": "15g",
+      "fat": "17g",
+      "carbs": "52g"
+    },
+    "instructions": "Combine zucchini, almond flour, carrots, spinach and add beef. Cook and serve."
+  },
+  {
+    "name": "Paleo Power Meal 124",
+    "diet": "paleo",
+    "allergies": [
+      "soy",
+      "nuts"
+    ],
+    "calories": 698,
+    "ingredients": [
+      "zucchini",
+      "coconut oil",
+      "beef",
+      "berries",
+      "almond flour"
+    ],
+    "nutrients": {
+      "protein": "22g",
+      "fat": "27g",
+      "carbs": "46g"
+    },
+    "instructions": "Combine zucchini, coconut oil, beef, berries and add almond flour. Cook and serve."
+  },
+  {
+    "name": "Balanced Power Meal 125",
+    "diet": "balanced",
+    "allergies": [
+      "nuts"
+    ],
+    "calories": 422,
+    "ingredients": [
+      "whole wheat wrap",
+      "hummus",
+      "lettuce",
+      "turkey",
+      "beans"
+    ],
+    "nutrients": {
+      "protein": "15g",
+      "fat": "23g",
+      "carbs": "80g"
+    },
+    "instructions": "Combine whole wheat wrap, hummus, lettuce, turkey and add beans. Cook and serve."
+  },
+  {
+    "name": "Keto Power Meal 126",
+    "diet": "keto",
+    "allergies": [],
+    "calories": 850,
+    "ingredients": [
+      "cheese",
+      "avocado",
+      "cauliflower",
+      "almonds",
+      "olive oil"
+    ],
+    "nutrients": {
+      "protein": "37g",
+      "fat": "13g",
+      "carbs": "68g"
+    },
+    "instructions": "Combine cheese, avocado, cauliflower, almonds and add olive oil. Cook and serve."
+  },
+  {
+    "name": "Paleo Power Meal 127",
+    "diet": "paleo",
+    "allergies": [
+      "eggs",
+      "soy"
+    ],
+    "calories": 737,
+    "ingredients": [
+      "almond flour",
+      "egg",
+      "spinach",
+      "coconut oil",
+      "carrots"
+    ],
+    "nutrients": {
+      "protein": "34g",
+      "fat": "19g",
+      "carbs": "49g"
+    },
+    "instructions": "Combine almond flour, egg, spinach, coconut oil and add carrots. Cook and serve."
+  },
+  {
+    "name": "Vegan Power Meal 128",
+    "diet": "vegan",
+    "allergies": [],
+    "calories": 758,
+    "ingredients": [
+      "tomatoes",
+      "quinoa",
+      "avocado",
+      "sweet potato",
+      "tofu"
+    ],
+    "nutrients": {
+      "protein": "31g",
+      "fat": "11g",
+      "carbs": "52g"
+    },
+    "instructions": "Combine tomatoes, quinoa, avocado, sweet potato and add tofu. Cook and serve."
+  },
+  {
+    "name": "Vegetarian Power Meal 129",
+    "diet": "vegetarian",
+    "allergies": [
+      "fish",
+      "nuts"
+    ],
+    "calories": 717,
+    "ingredients": [
+      "eggs",
+      "banana",
+      "zucchini",
+      "broccoli",
+      "mushrooms"
+    ],
+    "nutrients": {
+      "protein": "29g",
+      "fat": "14g",
+      "carbs": "60g"
+    },
+    "instructions": "Combine eggs, banana, zucchini, broccoli and add mushrooms. Cook and serve."
+  },
+  {
+    "name": "Vegetarian Power Meal 130",
+    "diet": "vegetarian",
+    "allergies": [],
+    "calories": 503,
+    "ingredients": [
+      "cheddar",
+      "banana",
+      "broccoli",
+      "oats",
+      "mushrooms"
+    ],
+    "nutrients": {
+      "protein": "25g",
+      "fat": "12g",
+      "carbs": "45g"
+    },
+    "instructions": "Combine cheddar, banana, broccoli, oats and add mushrooms. Cook and serve."
+  },
+  {
+    "name": "Balanced Power Meal 131",
+    "diet": "balanced",
+    "allergies": [
+      "gluten",
+      "shellfish"
+    ],
+    "calories": 783,
+    "ingredients": [
+      "cucumber",
+      "whole wheat wrap",
+      "toast",
+      "hummus",
+      "lettuce"
+    ],
+    "nutrients": {
+      "protein": "16g",
+      "fat": "28g",
+      "carbs": "62g"
+    },
+    "instructions": "Combine cucumber, whole wheat wrap, toast, hummus and add lettuce. Cook and serve."
+  },
+  {
+    "name": "Balanced Power Meal 132",
+    "diet": "balanced",
+    "allergies": [],
+    "calories": 454,
+    "ingredients": [
+      "hummus",
+      "toast",
+      "whole wheat wrap",
+      "beans",
+      "rice"
+    ],
+    "nutrients": {
+      "protein": "20g",
+      "fat": "11g",
+      "carbs": "86g"
+    },
+    "instructions": "Combine hummus, toast, whole wheat wrap, beans and add rice. Cook and serve."
+  },
+  {
+    "name": "Paleo Power Meal 133",
+    "diet": "paleo",
+    "allergies": [
+      "fish"
+    ],
+    "calories": 408,
+    "ingredients": [
+      "zucchini",
+      "carrots",
+      "berries",
+      "coconut oil",
+      "beef"
+    ],
+    "nutrients": {
+      "protein": "17g",
+      "fat": "12g",
+      "carbs": "28g"
+    },
+    "instructions": "Combine zucchini, carrots, berries, coconut oil and add beef. Cook and serve."
+  },
+  {
+    "name": "Keto Power Meal 134",
+    "diet": "keto",
+    "allergies": [
+      "eggs",
+      "gluten"
+    ],
+    "calories": 726,
+    "ingredients": [
+      "almonds",
+      "olive oil",
+      "cheese",
+      "avocado",
+      "chicken"
+    ],
+    "nutrients": {
+      "protein": "13g",
+      "fat": "13g",
+      "carbs": "41g"
+    },
+    "instructions": "Combine almonds, olive oil, cheese, avocado and add chicken. Cook and serve."
+  },
+  {
+    "name": "Vegan Power Meal 135",
+    "diet": "vegan",
+    "allergies": [
+      "shellfish"
+    ],
+    "calories": 737,
+    "ingredients": [
+      "quinoa",
+      "tomatoes",
+      "avocado",
+      "lentils",
+      "brown rice"
+    ],
+    "nutrients": {
+      "protein": "15g",
+      "fat": "30g",
+      "carbs": "82g"
+    },
+    "instructions": "Combine quinoa, tomatoes, avocado, lentils and add brown rice. Cook and serve."
+  },
+  {
+    "name": "Vegetarian Power Meal 136",
+    "diet": "vegetarian",
+    "allergies": [
+      "soy"
+    ],
+    "calories": 798,
+    "ingredients": [
+      "banana",
+      "mushrooms",
+      "cheddar",
+      "eggs",
+      "oats"
+    ],
+    "nutrients": {
+      "protein": "27g",
+      "fat": "29g",
+      "carbs": "56g"
+    },
+    "instructions": "Combine banana, mushrooms, cheddar, eggs and add oats. Cook and serve."
+  },
+  {
+    "name": "Balanced Power Meal 137",
+    "diet": "balanced",
+    "allergies": [
+      "soy"
+    ],
+    "calories": 727,
+    "ingredients": [
+      "hummus",
+      "turkey",
+      "cucumber",
+      "rice",
+      "toast"
+    ],
+    "nutrients": {
+      "protein": "28g",
+      "fat": "15g",
+      "carbs": "22g"
+    },
+    "instructions": "Combine hummus, turkey, cucumber, rice and add toast. Cook and serve."
+  },
+  {
+    "name": "Keto Power Meal 138",
+    "diet": "keto",
+    "allergies": [
+      "dairy"
+    ],
+    "calories": 745,
+    "ingredients": [
+      "cheese",
+      "zucchini noodles",
+      "almonds",
+      "chicken",
+      "cauliflower"
+    ],
+    "nutrients": {
+      "protein": "21g",
+      "fat": "30g",
+      "carbs": "74g"
+    },
+    "instructions": "Combine cheese, zucchini noodles, almonds, chicken and add cauliflower. Cook and serve."
+  },
+  {
+    "name": "Balanced Power Meal 139",
+    "diet": "balanced",
+    "allergies": [
+      "nuts",
+      "dairy"
+    ],
+    "calories": 649,
+    "ingredients": [
+      "hummus",
+      "toast",
+      "rice",
+      "cucumber",
+      "whole wheat wrap"
+    ],
+    "nutrients": {
+      "protein": "13g",
+      "fat": "26g",
+      "carbs": "26g"
+    },
+    "instructions": "Combine hummus, toast, rice, cucumber and add whole wheat wrap. Cook and serve."
+  },
+  {
+    "name": "Vegetarian Power Meal 140",
+    "diet": "vegetarian",
+    "allergies": [
+      "gluten"
+    ],
+    "calories": 639,
+    "ingredients": [
+      "broccoli",
+      "yogurt",
+      "zucchini",
+      "mushrooms",
+      "eggs"
+    ],
+    "nutrients": {
+      "protein": "38g",
+      "fat": "26g",
+      "carbs": "39g"
+    },
+    "instructions": "Combine broccoli, yogurt, zucchini, mushrooms and add eggs. Cook and serve."
+  },
+  {
+    "name": "Keto Power Meal 141",
+    "diet": "keto",
+    "allergies": [
+      "shellfish",
+      "nuts"
+    ],
+    "calories": 806,
+    "ingredients": [
+      "almonds",
+      "cheese",
+      "avocado",
+      "zucchini noodles",
+      "chicken"
+    ],
+    "nutrients": {
+      "protein": "25g",
+      "fat": "30g",
+      "carbs": "46g"
+    },
+    "instructions": "Combine almonds, cheese, avocado, zucchini noodles and add chicken. Cook and serve."
+  },
+  {
+    "name": "Paleo Power Meal 142",
+    "diet": "paleo",
+    "allergies": [
+      "gluten",
+      "dairy"
+    ],
+    "calories": 485,
+    "ingredients": [
+      "almond flour",
+      "egg",
+      "berries",
+      "carrots",
+      "beef"
+    ],
+    "nutrients": {
+      "protein": "26g",
+      "fat": "16g",
+      "carbs": "51g"
+    },
+    "instructions": "Combine almond flour, egg, berries, carrots and add beef. Cook and serve."
+  },
+  {
+    "name": "Vegan Power Meal 143",
+    "diet": "vegan",
+    "allergies": [
+      "eggs",
+      "gluten"
+    ],
+    "calories": 544,
+    "ingredients": [
+      "sweet potato",
+      "avocado",
+      "lentils",
+      "tofu",
+      "brown rice"
+    ],
+    "nutrients": {
+      "protein": "13g",
+      "fat": "14g",
+      "carbs": "52g"
+    },
+    "instructions": "Combine sweet potato, avocado, lentils, tofu and add brown rice. Cook and serve."
+  },
+  {
+    "name": "Balanced Power Meal 144",
+    "diet": "balanced",
+    "allergies": [],
+    "calories": 421,
+    "ingredients": [
+      "beans",
+      "whole wheat wrap",
+      "toast",
+      "turkey",
+      "lettuce"
+    ],
+    "nutrients": {
+      "protein": "39g",
+      "fat": "20g",
+      "carbs": "21g"
+    },
+    "instructions": "Combine beans, whole wheat wrap, toast, turkey and add lettuce. Cook and serve."
+  },
+  {
+    "name": "Vegetarian Power Meal 145",
+    "diet": "vegetarian",
+    "allergies": [],
+    "calories": 533,
+    "ingredients": [
+      "oats",
+      "cheddar",
+      "banana",
+      "yogurt",
+      "zucchini"
+    ],
+    "nutrients": {
+      "protein": "16g",
+      "fat": "27g",
+      "carbs": "39g"
+    },
+    "instructions": "Combine oats, cheddar, banana, yogurt and add zucchini. Cook and serve."
+  },
+  {
+    "name": "Keto Power Meal 146",
+    "diet": "keto",
+    "allergies": [
+      "eggs"
+    ],
+    "calories": 524,
+    "ingredients": [
+      "almonds",
+      "chicken",
+      "zucchini noodles",
+      "avocado",
+      "cauliflower"
+    ],
+    "nutrients": {
+      "protein": "40g",
+      "fat": "26g",
+      "carbs": "37g"
+    },
+    "instructions": "Combine almonds, chicken, zucchini noodles, avocado and add cauliflower. Cook and serve."
+  },
+  {
+    "name": "Paleo Power Meal 147",
+    "diet": "paleo",
+    "allergies": [
+      "shellfish",
+      "soy"
+    ],
+    "calories": 632,
+    "ingredients": [
+      "berries",
+      "zucchini",
+      "spinach",
+      "egg",
+      "beef"
+    ],
+    "nutrients": {
+      "protein": "22g",
+      "fat": "12g",
+      "carbs": "69g"
+    },
+    "instructions": "Combine berries, zucchini, spinach, egg and add beef. Cook and serve."
+  },
+  {
+    "name": "Vegan Power Meal 148",
+    "diet": "vegan",
+    "allergies": [
+      "eggs",
+      "shellfish"
+    ],
+    "calories": 757,
+    "ingredients": [
+      "spinach",
+      "quinoa",
+      "tofu",
+      "brown rice",
+      "tomatoes"
+    ],
+    "nutrients": {
+      "protein": "34g",
+      "fat": "18g",
+      "carbs": "54g"
+    },
+    "instructions": "Combine spinach, quinoa, tofu, brown rice and add tomatoes. Cook and serve."
+  },
+  {
+    "name": "Vegan Power Meal 149",
+    "diet": "vegan",
+    "allergies": [],
+    "calories": 723,
+    "ingredients": [
+      "sweet potato",
+      "lentils",
+      "quinoa",
+      "tofu",
+      "brown rice"
+    ],
+    "nutrients": {
+      "protein": "37g",
+      "fat": "17g",
+      "carbs": "40g"
+    },
+    "instructions": "Combine sweet potato, lentils, quinoa, tofu and add brown rice. Cook and serve."
+  },
+  {
+    "name": "Balanced Power Meal 150",
+    "diet": "balanced",
+    "allergies": [
+      "soy"
+    ],
+    "calories": 416,
+    "ingredients": [
+      "lettuce",
+      "rice",
+      "whole wheat wrap",
+      "toast",
+      "hummus"
+    ],
+    "nutrients": {
+      "protein": "33g",
+      "fat": "23g",
+      "carbs": "20g"
+    },
+    "instructions": "Combine lettuce, rice, whole wheat wrap, toast and add hummus. Cook and serve."
+  },
+  {
+    "name": "Keto Power Meal 151",
+    "diet": "keto",
+    "allergies": [
+      "nuts",
+      "soy"
+    ],
+    "calories": 839,
+    "ingredients": [
+      "olive oil",
+      "cauliflower",
+      "cheese",
+      "chicken",
+      "zucchini noodles"
+    ],
+    "nutrients": {
+      "protein": "27g",
+      "fat": "29g",
+      "carbs": "31g"
+    },
+    "instructions": "Combine olive oil, cauliflower, cheese, chicken and add zucchini noodles. Cook and serve."
+  },
+  {
+    "name": "Keto Power Meal 152",
+    "diet": "keto",
+    "allergies": [
+      "shellfish"
+    ],
+    "calories": 574,
+    "ingredients": [
+      "chicken",
+      "olive oil",
+      "cauliflower",
+      "avocado",
+      "almonds"
+    ],
+    "nutrients": {
+      "protein": "27g",
+      "fat": "15g",
+      "carbs": "84g"
+    },
+    "instructions": "Combine chicken, olive oil, cauliflower, avocado and add almonds. Cook and serve."
+  },
+  {
+    "name": "Balanced Power Meal 153",
+    "diet": "balanced",
+    "allergies": [
+      "nuts"
+    ],
+    "calories": 573,
+    "ingredients": [
+      "whole wheat wrap",
+      "toast",
+      "rice",
+      "cucumber",
+      "turkey"
+    ],
+    "nutrients": {
+      "protein": "23g",
+      "fat": "13g",
+      "carbs": "73g"
+    },
+    "instructions": "Combine whole wheat wrap, toast, rice, cucumber and add turkey. Cook and serve."
+  },
+  {
+    "name": "Balanced Power Meal 154",
+    "diet": "balanced",
+    "allergies": [
+      "fish"
+    ],
+    "calories": 824,
+    "ingredients": [
+      "lettuce",
+      "toast",
+      "rice",
+      "turkey",
+      "beans"
+    ],
+    "nutrients": {
+      "protein": "15g",
+      "fat": "13g",
+      "carbs": "37g"
+    },
+    "instructions": "Combine lettuce, toast, rice, turkey and add beans. Cook and serve."
+  },
+  {
+    "name": "Paleo Power Meal 155",
+    "diet": "paleo",
+    "allergies": [],
+    "calories": 517,
+    "ingredients": [
+      "beef",
+      "spinach",
+      "egg",
+      "berries",
+      "carrots"
+    ],
+    "nutrients": {
+      "protein": "33g",
+      "fat": "15g",
+      "carbs": "73g"
+    },
+    "instructions": "Combine beef, spinach, egg, berries and add carrots. Cook and serve."
+  },
+  {
+    "name": "Keto Power Meal 156",
+    "diet": "keto",
+    "allergies": [
+      "soy"
+    ],
+    "calories": 664,
+    "ingredients": [
+      "olive oil",
+      "almonds",
+      "avocado",
+      "chicken",
+      "zucchini noodles"
+    ],
+    "nutrients": {
+      "protein": "30g",
+      "fat": "21g",
+      "carbs": "43g"
+    },
+    "instructions": "Combine olive oil, almonds, avocado, chicken and add zucchini noodles. Cook and serve."
+  },
+  {
+    "name": "Balanced Power Meal 157",
+    "diet": "balanced",
+    "allergies": [],
+    "calories": 509,
+    "ingredients": [
+      "beans",
+      "rice",
+      "toast",
+      "cucumber",
+      "turkey"
+    ],
+    "nutrients": {
+      "protein": "39g",
+      "fat": "17g",
+      "carbs": "84g"
+    },
+    "instructions": "Combine beans, rice, toast, cucumber and add turkey. Cook and serve."
+  },
+  {
+    "name": "Vegetarian Power Meal 158",
+    "diet": "vegetarian",
+    "allergies": [
+      "eggs",
+      "gluten"
+    ],
+    "calories": 436,
+    "ingredients": [
+      "oats",
+      "cheddar",
+      "zucchini",
+      "broccoli",
+      "yogurt"
+    ],
+    "nutrients": {
+      "protein": "24g",
+      "fat": "30g",
+      "carbs": "36g"
+    },
+    "instructions": "Combine oats, cheddar, zucchini, broccoli and add yogurt. Cook and serve."
+  },
+  {
+    "name": "Paleo Power Meal 159",
+    "diet": "paleo",
+    "allergies": [
+      "gluten",
+      "fish"
+    ],
+    "calories": 751,
+    "ingredients": [
+      "carrots",
+      "zucchini",
+      "spinach",
+      "almond flour",
+      "berries"
+    ],
+    "nutrients": {
+      "protein": "38g",
+      "fat": "27g",
+      "carbs": "70g"
+    },
+    "instructions": "Combine carrots, zucchini, spinach, almond flour and add berries. Cook and serve."
+  },
+  {
+    "name": "Balanced Power Meal 160",
+    "diet": "balanced",
+    "allergies": [],
+    "calories": 585,
+    "ingredients": [
+      "cucumber",
+      "lettuce",
+      "toast",
+      "rice",
+      "turkey"
+    ],
+    "nutrients": {
+      "protein": "33g",
+      "fat": "17g",
+      "carbs": "69g"
+    },
+    "instructions": "Combine cucumber, lettuce, toast, rice and add turkey. Cook and serve."
+  },
+  {
+    "name": "Balanced Power Meal 161",
+    "diet": "balanced",
+    "allergies": [
+      "shellfish"
+    ],
+    "calories": 624,
+    "ingredients": [
+      "turkey",
+      "toast",
+      "beans",
+      "cucumber",
+      "lettuce"
+    ],
+    "nutrients": {
+      "protein": "31g",
+      "fat": "14g",
+      "carbs": "38g"
+    },
+    "instructions": "Combine turkey, toast, beans, cucumber and add lettuce. Cook and serve."
+  },
+  {
+    "name": "Vegetarian Power Meal 162",
+    "diet": "vegetarian",
+    "allergies": [],
+    "calories": 640,
+    "ingredients": [
+      "banana",
+      "eggs",
+      "zucchini",
+      "cheddar",
+      "broccoli"
+    ],
+    "nutrients": {
+      "protein": "26g",
+      "fat": "21g",
+      "carbs": "80g"
+    },
+    "instructions": "Combine banana, eggs, zucchini, cheddar and add broccoli. Cook and serve."
+  },
+  {
+    "name": "Vegetarian Power Meal 163",
+    "diet": "vegetarian",
+    "allergies": [],
+    "calories": 460,
+    "ingredients": [
+      "zucchini",
+      "yogurt",
+      "mushrooms",
+      "oats",
+      "banana"
+    ],
+    "nutrients": {
+      "protein": "29g",
+      "fat": "18g",
+      "carbs": "90g"
+    },
+    "instructions": "Combine zucchini, yogurt, mushrooms, oats and add banana. Cook and serve."
+  },
+  {
+    "name": "Vegan Power Meal 164",
+    "diet": "vegan",
+    "allergies": [
+      "nuts",
+      "shellfish"
+    ],
+    "calories": 551,
+    "ingredients": [
+      "brown rice",
+      "avocado",
+      "spinach",
+      "tofu",
+      "quinoa"
+    ],
+    "nutrients": {
+      "protein": "33g",
+      "fat": "19g",
+      "carbs": "57g"
+    },
+    "instructions": "Combine brown rice, avocado, spinach, tofu and add quinoa. Cook and serve."
+  },
+  {
+    "name": "Vegetarian Power Meal 165",
+    "diet": "vegetarian",
+    "allergies": [
+      "dairy"
+    ],
+    "calories": 667,
+    "ingredients": [
+      "yogurt",
+      "broccoli",
+      "zucchini",
+      "mushrooms",
+      "oats"
+    ],
+    "nutrients": {
+      "protein": "19g",
+      "fat": "30g",
+      "carbs": "73g"
+    },
+    "instructions": "Combine yogurt, broccoli, zucchini, mushrooms and add oats. Cook and serve."
+  },
+  {
+    "name": "Keto Power Meal 166",
+    "diet": "keto",
+    "allergies": [
+      "gluten",
+      "dairy"
+    ],
+    "calories": 876,
+    "ingredients": [
+      "olive oil",
+      "cauliflower",
+      "avocado",
+      "cheese",
+      "chicken"
+    ],
+    "nutrients": {
+      "protein": "24g",
+      "fat": "26g",
+      "carbs": "40g"
+    },
+    "instructions": "Combine olive oil, cauliflower, avocado, cheese and add chicken. Cook and serve."
+  },
+  {
+    "name": "Keto Power Meal 167",
+    "diet": "keto",
+    "allergies": [
+      "gluten",
+      "shellfish"
+    ],
+    "calories": 669,
+    "ingredients": [
+      "chicken",
+      "almonds",
+      "zucchini noodles",
+      "avocado",
+      "cauliflower"
+    ],
+    "nutrients": {
+      "protein": "37g",
+      "fat": "15g",
+      "carbs": "22g"
+    },
+    "instructions": "Combine chicken, almonds, zucchini noodles, avocado and add cauliflower. Cook and serve."
+  },
+  {
+    "name": "Keto Power Meal 168",
+    "diet": "keto",
+    "allergies": [
+      "dairy"
+    ],
+    "calories": 806,
+    "ingredients": [
+      "zucchini noodles",
+      "avocado",
+      "chicken",
+      "cheese",
+      "olive oil"
+    ],
+    "nutrients": {
+      "protein": "25g",
+      "fat": "12g",
+      "carbs": "57g"
+    },
+    "instructions": "Combine zucchini noodles, avocado, chicken, cheese and add olive oil. Cook and serve."
+  },
+  {
+    "name": "Paleo Power Meal 169",
+    "diet": "paleo",
+    "allergies": [],
+    "calories": 795,
+    "ingredients": [
+      "egg",
+      "zucchini",
+      "almond flour",
+      "coconut oil",
+      "spinach"
+    ],
+    "nutrients": {
+      "protein": "28g",
+      "fat": "21g",
+      "carbs": "40g"
+    },
+    "instructions": "Combine egg, zucchini, almond flour, coconut oil and add spinach. Cook and serve."
+  },
+  {
+    "name": "Vegan Power Meal 170",
+    "diet": "vegan",
+    "allergies": [
+      "gluten"
+    ],
+    "calories": 577,
+    "ingredients": [
+      "quinoa",
+      "brown rice",
+      "tomatoes",
+      "tofu",
+      "lentils"
+    ],
+    "nutrients": {
+      "protein": "40g",
+      "fat": "25g",
+      "carbs": "69g"
+    },
+    "instructions": "Combine quinoa, brown rice, tomatoes, tofu and add lentils. Cook and serve."
+  },
+  {
+    "name": "Keto Power Meal 171",
+    "diet": "keto",
+    "allergies": [
+      "gluten",
+      "nuts"
+    ],
+    "calories": 448,
+    "ingredients": [
+      "chicken",
+      "olive oil",
+      "zucchini noodles",
+      "almonds",
+      "avocado"
+    ],
+    "nutrients": {
+      "protein": "37g",
+      "fat": "27g",
+      "carbs": "59g"
+    },
+    "instructions": "Combine chicken, olive oil, zucchini noodles, almonds and add avocado. Cook and serve."
+  },
+  {
+    "name": "Paleo Power Meal 172",
+    "diet": "paleo",
+    "allergies": [
+      "eggs",
+      "shellfish"
+    ],
+    "calories": 499,
+    "ingredients": [
+      "almond flour",
+      "coconut oil",
+      "zucchini",
+      "egg",
+      "beef"
+    ],
+    "nutrients": {
+      "protein": "29g",
+      "fat": "24g",
+      "carbs": "20g"
+    },
+    "instructions": "Combine almond flour, coconut oil, zucchini, egg and add beef. Cook and serve."
+  },
+  {
+    "name": "Keto Power Meal 173",
+    "diet": "keto",
+    "allergies": [
+      "nuts"
+    ],
+    "calories": 746,
+    "ingredients": [
+      "olive oil",
+      "avocado",
+      "zucchini noodles",
+      "cauliflower",
+      "chicken"
+    ],
+    "nutrients": {
+      "protein": "28g",
+      "fat": "25g",
+      "carbs": "34g"
+    },
+    "instructions": "Combine olive oil, avocado, zucchini noodles, cauliflower and add chicken. Cook and serve."
+  },
+  {
+    "name": "Vegan Power Meal 174",
+    "diet": "vegan",
+    "allergies": [],
+    "calories": 692,
+    "ingredients": [
+      "brown rice",
+      "sweet potato",
+      "tomatoes",
+      "avocado",
+      "spinach"
+    ],
+    "nutrients": {
+      "protein": "22g",
+      "fat": "29g",
+      "carbs": "72g"
+    },
+    "instructions": "Combine brown rice, sweet potato, tomatoes, avocado and add spinach. Cook and serve."
+  },
+  {
+    "name": "Keto Power Meal 175",
+    "diet": "keto",
+    "allergies": [],
+    "calories": 855,
+    "ingredients": [
+      "cheese",
+      "olive oil",
+      "almonds",
+      "avocado",
+      "zucchini noodles"
+    ],
+    "nutrients": {
+      "protein": "26g",
+      "fat": "25g",
+      "carbs": "58g"
+    },
+    "instructions": "Combine cheese, olive oil, almonds, avocado and add zucchini noodles. Cook and serve."
+  },
+  {
+    "name": "Balanced Power Meal 176",
+    "diet": "balanced",
+    "allergies": [
+      "nuts"
+    ],
+    "calories": 434,
+    "ingredients": [
+      "cucumber",
+      "beans",
+      "lettuce",
+      "hummus",
+      "turkey"
+    ],
+    "nutrients": {
+      "protein": "35g",
+      "fat": "20g",
+      "carbs": "59g"
+    },
+    "instructions": "Combine cucumber, beans, lettuce, hummus and add turkey. Cook and serve."
+  },
+  {
+    "name": "Balanced Power Meal 177",
+    "diet": "balanced",
+    "allergies": [
+      "eggs",
+      "gluten"
+    ],
+    "calories": 779,
+    "ingredients": [
+      "beans",
+      "rice",
+      "toast",
+      "turkey",
+      "cucumber"
+    ],
+    "nutrients": {
+      "protein": "15g",
+      "fat": "13g",
+      "carbs": "44g"
+    },
+    "instructions": "Combine beans, rice, toast, turkey and add cucumber. Cook and serve."
+  },
+  {
+    "name": "Vegetarian Power Meal 178",
+    "diet": "vegetarian",
+    "allergies": [
+      "shellfish"
+    ],
+    "calories": 891,
+    "ingredients": [
+      "cheddar",
+      "zucchini",
+      "banana",
+      "oats",
+      "broccoli"
+    ],
+    "nutrients": {
+      "protein": "16g",
+      "fat": "24g",
+      "carbs": "48g"
+    },
+    "instructions": "Combine cheddar, zucchini, banana, oats and add broccoli. Cook and serve."
+  },
+  {
+    "name": "Paleo Power Meal 179",
+    "diet": "paleo",
+    "allergies": [],
+    "calories": 531,
+    "ingredients": [
+      "coconut oil",
+      "beef",
+      "egg",
+      "zucchini",
+      "carrots"
+    ],
+    "nutrients": {
+      "protein": "34g",
+      "fat": "19g",
+      "carbs": "36g"
+    },
+    "instructions": "Combine coconut oil, beef, egg, zucchini and add carrots. Cook and serve."
+  },
+  {
+    "name": "Balanced Power Meal 180",
+    "diet": "balanced",
+    "allergies": [
+      "shellfish"
+    ],
+    "calories": 643,
+    "ingredients": [
+      "turkey",
+      "toast",
+      "whole wheat wrap",
+      "hummus",
+      "cucumber"
+    ],
+    "nutrients": {
+      "protein": "15g",
+      "fat": "18g",
+      "carbs": "87g"
+    },
+    "instructions": "Combine turkey, toast, whole wheat wrap, hummus and add cucumber. Cook and serve."
+  },
+  {
+    "name": "Vegetarian Power Meal 181",
+    "diet": "vegetarian",
+    "allergies": [],
+    "calories": 491,
+    "ingredients": [
+      "broccoli",
+      "zucchini",
+      "mushrooms",
+      "banana",
+      "eggs"
+    ],
+    "nutrients": {
+      "protein": "21g",
+      "fat": "17g",
+      "carbs": "24g"
+    },
+    "instructions": "Combine broccoli, zucchini, mushrooms, banana and add eggs. Cook and serve."
+  },
+  {
+    "name": "Keto Power Meal 182",
+    "diet": "keto",
+    "allergies": [
+      "dairy"
+    ],
+    "calories": 600,
+    "ingredients": [
+      "almonds",
+      "zucchini noodles",
+      "chicken",
+      "avocado",
+      "cauliflower"
+    ],
+    "nutrients": {
+      "protein": "36g",
+      "fat": "13g",
+      "carbs": "62g"
+    },
+    "instructions": "Combine almonds, zucchini noodles, chicken, avocado and add cauliflower. Cook and serve."
+  },
+  {
+    "name": "Balanced Power Meal 183",
+    "diet": "balanced",
+    "allergies": [
+      "shellfish"
+    ],
+    "calories": 664,
+    "ingredients": [
+      "cucumber",
+      "turkey",
+      "toast",
+      "lettuce",
+      "beans"
+    ],
+    "nutrients": {
+      "protein": "12g",
+      "fat": "13g",
+      "carbs": "60g"
+    },
+    "instructions": "Combine cucumber, turkey, toast, lettuce and add beans. Cook and serve."
+  },
+  {
+    "name": "Vegan Power Meal 184",
+    "diet": "vegan",
+    "allergies": [
+      "nuts",
+      "soy"
+    ],
+    "calories": 435,
+    "ingredients": [
+      "tofu",
+      "spinach",
+      "sweet potato",
+      "quinoa",
+      "lentils"
+    ],
+    "nutrients": {
+      "protein": "39g",
+      "fat": "20g",
+      "carbs": "68g"
+    },
+    "instructions": "Combine tofu, spinach, sweet potato, quinoa and add lentils. Cook and serve."
+  },
+  {
+    "name": "Vegetarian Power Meal 185",
+    "diet": "vegetarian",
+    "allergies": [],
+    "calories": 676,
+    "ingredients": [
+      "oats",
+      "eggs",
+      "zucchini",
+      "mushrooms",
+      "cheddar"
+    ],
+    "nutrients": {
+      "protein": "31g",
+      "fat": "12g",
+      "carbs": "67g"
+    },
+    "instructions": "Combine oats, eggs, zucchini, mushrooms and add cheddar. Cook and serve."
+  },
+  {
+    "name": "Paleo Power Meal 186",
+    "diet": "paleo",
+    "allergies": [
+      "soy"
+    ],
+    "calories": 640,
+    "ingredients": [
+      "spinach",
+      "zucchini",
+      "egg",
+      "coconut oil",
+      "berries"
+    ],
+    "nutrients": {
+      "protein": "29g",
+      "fat": "18g",
+      "carbs": "37g"
+    },
+    "instructions": "Combine spinach, zucchini, egg, coconut oil and add berries. Cook and serve."
+  },
+  {
+    "name": "Paleo Power Meal 187",
+    "diet": "paleo",
+    "allergies": [
+      "gluten",
+      "nuts"
+    ],
+    "calories": 499,
+    "ingredients": [
+      "spinach",
+      "berries",
+      "beef",
+      "almond flour",
+      "zucchini"
+    ],
+    "nutrients": {
+      "protein": "20g",
+      "fat": "20g",
+      "carbs": "88g"
+    },
+    "instructions": "Combine spinach, berries, beef, almond flour and add zucchini. Cook and serve."
+  },
+  {
+    "name": "Paleo Power Meal 188",
+    "diet": "paleo",
+    "allergies": [],
+    "calories": 591,
+    "ingredients": [
+      "coconut oil",
+      "egg",
+      "spinach",
+      "beef",
+      "almond flour"
+    ],
+    "nutrients": {
+      "protein": "15g",
+      "fat": "22g",
+      "carbs": "41g"
+    },
+    "instructions": "Combine coconut oil, egg, spinach, beef and add almond flour. Cook and serve."
+  },
+  {
+    "name": "Vegan Power Meal 189",
+    "diet": "vegan",
+    "allergies": [
+      "eggs",
+      "nuts"
+    ],
+    "calories": 673,
+    "ingredients": [
+      "lentils",
+      "tomatoes",
+      "avocado",
+      "spinach",
+      "brown rice"
+    ],
+    "nutrients": {
+      "protein": "33g",
+      "fat": "18g",
+      "carbs": "61g"
+    },
+    "instructions": "Combine lentils, tomatoes, avocado, spinach and add brown rice. Cook and serve."
+  },
+  {
+    "name": "Vegetarian Power Meal 190",
+    "diet": "vegetarian",
+    "allergies": [
+      "soy"
+    ],
+    "calories": 655,
+    "ingredients": [
+      "cheddar",
+      "eggs",
+      "mushrooms",
+      "oats",
+      "banana"
+    ],
+    "nutrients": {
+      "protein": "40g",
+      "fat": "14g",
+      "carbs": "78g"
+    },
+    "instructions": "Combine cheddar, eggs, mushrooms, oats and add banana. Cook and serve."
+  },
+  {
+    "name": "Vegetarian Power Meal 191",
+    "diet": "vegetarian",
+    "allergies": [],
+    "calories": 449,
+    "ingredients": [
+      "banana",
+      "oats",
+      "mushrooms",
+      "yogurt",
+      "cheddar"
+    ],
+    "nutrients": {
+      "protein": "39g",
+      "fat": "28g",
+      "carbs": "24g"
+    },
+    "instructions": "Combine banana, oats, mushrooms, yogurt and add cheddar. Cook and serve."
+  },
+  {
+    "name": "Vegan Power Meal 192",
+    "diet": "vegan",
+    "allergies": [
+      "soy",
+      "fish"
+    ],
+    "calories": 484,
+    "ingredients": [
+      "spinach",
+      "brown rice",
+      "tomatoes",
+      "tofu",
+      "quinoa"
+    ],
+    "nutrients": {
+      "protein": "40g",
+      "fat": "11g",
+      "carbs": "83g"
+    },
+    "instructions": "Combine spinach, brown rice, tomatoes, tofu and add quinoa. Cook and serve."
+  },
+  {
+    "name": "Keto Power Meal 193",
+    "diet": "keto",
+    "allergies": [
+      "dairy",
+      "eggs"
+    ],
+    "calories": 567,
+    "ingredients": [
+      "olive oil",
+      "almonds",
+      "chicken",
+      "cauliflower",
+      "zucchini noodles"
+    ],
+    "nutrients": {
+      "protein": "22g",
+      "fat": "12g",
+      "carbs": "39g"
+    },
+    "instructions": "Combine olive oil, almonds, chicken, cauliflower and add zucchini noodles. Cook and serve."
+  },
+  {
+    "name": "Paleo Power Meal 194",
+    "diet": "paleo",
+    "allergies": [
+      "eggs",
+      "fish"
+    ],
+    "calories": 742,
+    "ingredients": [
+      "almond flour",
+      "spinach",
+      "berries",
+      "beef",
+      "egg"
+    ],
+    "nutrients": {
+      "protein": "23g",
+      "fat": "10g",
+      "carbs": "38g"
+    },
+    "instructions": "Combine almond flour, spinach, berries, beef and add egg. Cook and serve."
+  },
+  {
+    "name": "Paleo Power Meal 195",
+    "diet": "paleo",
+    "allergies": [
+      "gluten",
+      "shellfish"
+    ],
+    "calories": 616,
+    "ingredients": [
+      "carrots",
+      "beef",
+      "almond flour",
+      "spinach",
+      "berries"
+    ],
+    "nutrients": {
+      "protein": "40g",
+      "fat": "20g",
+      "carbs": "30g"
+    },
+    "instructions": "Combine carrots, beef, almond flour, spinach and add berries. Cook and serve."
+  },
+  {
+    "name": "Vegetarian Power Meal 196",
+    "diet": "vegetarian",
+    "allergies": [
+      "nuts",
+      "shellfish"
+    ],
+    "calories": 467,
+    "ingredients": [
+      "cheddar",
+      "eggs",
+      "broccoli",
+      "zucchini",
+      "yogurt"
+    ],
+    "nutrients": {
+      "protein": "31g",
+      "fat": "19g",
+      "carbs": "65g"
+    },
+    "instructions": "Combine cheddar, eggs, broccoli, zucchini and add yogurt. Cook and serve."
+  },
+  {
+    "name": "Paleo Power Meal 197",
+    "diet": "paleo",
+    "allergies": [],
+    "calories": 570,
+    "ingredients": [
+      "almond flour",
+      "carrots",
+      "spinach",
+      "egg",
+      "coconut oil"
+    ],
+    "nutrients": {
+      "protein": "29g",
+      "fat": "27g",
+      "carbs": "80g"
+    },
+    "instructions": "Combine almond flour, carrots, spinach, egg and add coconut oil. Cook and serve."
+  },
+  {
+    "name": "Balanced Power Meal 198",
+    "diet": "balanced",
+    "allergies": [
+      "soy",
+      "dairy"
+    ],
+    "calories": 574,
+    "ingredients": [
+      "whole wheat wrap",
+      "rice",
+      "turkey",
+      "lettuce",
+      "hummus"
+    ],
+    "nutrients": {
+      "protein": "33g",
+      "fat": "25g",
+      "carbs": "83g"
+    },
+    "instructions": "Combine whole wheat wrap, rice, turkey, lettuce and add hummus. Cook and serve."
+  },
+  {
+    "name": "Vegan Power Meal 199",
+    "diet": "vegan",
+    "allergies": [
+      "soy"
+    ],
+    "calories": 596,
+    "ingredients": [
+      "quinoa",
+      "avocado",
+      "spinach",
+      "tomatoes",
+      "lentils"
+    ],
+    "nutrients": {
+      "protein": "23g",
+      "fat": "10g",
+      "carbs": "62g"
+    },
+    "instructions": "Combine quinoa, avocado, spinach, tomatoes and add lentils. Cook and serve."
+  },
+  {
+    "name": "Balanced Power Meal 200",
+    "diet": "balanced",
+    "allergies": [],
+    "calories": 561,
+    "ingredients": [
+      "toast",
+      "whole wheat wrap",
+      "rice",
+      "beans",
+      "cucumber"
+    ],
+    "nutrients": {
+      "protein": "39g",
+      "fat": "27g",
+      "carbs": "67g"
+    },
+    "instructions": "Combine toast, whole wheat wrap, rice, beans and add cucumber. Cook and serve."
+  }
+];
 
-    //vegan
-    {
-      name: "Grilled Tofu Wrap",
-      diet: "vegan",
-      allergies: [],
-      calories: 450,
-      ingredients: ["tofu", "wrap", "lettuce", "sauce"],
-      nutrients: { protein: "20g", fat: "10g", carbs: "35g" },
-      instructions: "Grill tofu, wrap with lettuce and sauce."
-    },
-
-    {
-      name: "Vegan Buddha Bowl",
-      diet: "vegan",
-      allergies: [],
-      calories: 780,
-      ingredients: ["quinoa", "chickpeas", "avocado", "spinach", "sweet potato"],
-      nutrients: {
-        protein: "22g",
-        fat: "18g",
-        carbs: "92g"
-      },
-      instructions: "Roast sweet potato. Combine all ingredients in a bowl and serve."
-    },
-    {
-      name: "Tofu Stir-Fry",
-      diet: "vegan",
-      allergies: ["soy"],
-      calories: 650,
-      ingredients: ["tofu", "broccoli", "bell peppers", "soy sauce", "brown rice"],
-      nutrients: {
-        protein: "20g",
-        fat: "12g",
-        carbs: "70g"
-      },
-      instructions: "Stir-fry tofu and vegetables. Serve with rice."
-    },
-    {
-      name: "Vegan Lentil Tacos",
-      diet: "vegan",
-      allergies: [],
-      calories: 600,
-      ingredients: ["lentils", "taco shells", "lettuce", "tomatoes", "avocado"],
-      nutrients: { protein: "20g", fat: "18g", carbs: "70g" },
-      instructions: "Cook lentils with spices. Fill taco shells with lentils, veggies, and avocado."
-    },
-    {
-      name: "Vegan Chickpea Stew",
-      diet: "vegan",
-      allergies: [],
-      calories: 750,
-      ingredients: ["chickpeas", "tomatoes", "spinach", "onions", "garlic"],
-      nutrients: { protein: "24g", fat: "14g", carbs: "85g" },
-      instructions: "Simmer all ingredients until well cooked and flavors blend."
-    },
-
-    //keto
-    {
-      name: "Zucchini Noodles with Pesto",
-      diet: "keto",
-      allergies: ["nuts"],
-      calories: 600,
-      ingredients: ["zucchini", "olive oil", "basil", "parmesan", "pine nuts"],
-      nutrients: {
-        protein: "14g",
-        fat: "40g",
-        carbs: "20g"
-      },
-      instructions: "Spiralize zucchini. Toss with pesto sauce. Serve raw or lightly sautéed."
-    },
-    {
-      name: "Egg and Avocado Plate",
-      diet: "keto",
-      allergies: [],
-      calories: 720,
-      ingredients: ["eggs", "avocado", "olive oil", "tomatoes"],
-      nutrients: {
-        protein: "18g",
-        fat: "55g",
-        carbs: "10g"
-      },
-      instructions: "Boil eggs, slice avocado and tomatoes. Drizzle with olive oil."
-    },
-    {
-      name: "Keto Cauliflower Fried Rice",
-      diet: "keto",
-      allergies: ["eggs"],
-      calories: 560,
-      ingredients: ["cauliflower", "eggs", "soy sauce", "green onions", "carrots"],
-      nutrients: { protein: "18g", fat: "35g", carbs: "15g" },
-      instructions: "Sauté grated cauliflower with eggs and vegetables. Season with soy sauce."
-    },
-    {
-      name: "Avocado Chicken Salad",
-      diet: "keto",
-      allergies: [],
-      calories: 680,
-      ingredients: ["chicken breast", "avocado", "olive oil", "spinach", "cucumber"],
-      nutrients: { protein: "40g", fat: "45g", carbs: "10g" },
-      instructions: "Grill chicken and mix with sliced avocado and vegetables."
-    },
-
-    //paleo
-    {
-      name: "Grilled Chicken with Veggies",
-      diet: "paleo",
-      allergies: [],
-      calories: 810,
-      ingredients: ["chicken breast", "zucchini", "carrots", "olive oil", "spices"],
-      nutrients: {
-        protein: "40g",
-        fat: "28g",
-        carbs: "30g"
-      },
-      instructions: "Grill chicken and vegetables. Season with herbs and spices."
-    },
-    {
-      name: "Sweet Potato Hash",
-      diet: "paleo",
-      allergies: [],
-      calories: 580,
-      ingredients: ["sweet potato", "eggs", "onions", "bell peppers"],
-      nutrients: {
-        protein: "16g",
-        fat: "22g",
-        carbs: "50g"
-      },
-      instructions: "Sauté chopped sweet potatoes and veggies. Top with fried egg."
-    },
-    {
-      name: "Paleo Baked Cod with Veggies",
-      diet: "paleo",
-      allergies: ["fish"],
-      calories: 720,
-      ingredients: ["cod fillet", "zucchini", "bell peppers", "olive oil", "lemon"],
-      nutrients: { protein: "38g", fat: "25g", carbs: "28g" },
-      instructions: "Bake cod with vegetables and olive oil. Drizzle with lemon before serving."
-    },
-    {
-      name: "Paleo Turkey Meatballs with Zoodles",
-      diet: "paleo",
-      allergies: [],
-      calories: 690,
-      ingredients: ["ground turkey", "zucchini", "tomato sauce", "onion", "garlic"],
-      nutrients: { protein: "35g", fat: "22g", carbs: "25g" },
-      instructions: "Bake turkey meatballs and serve over spiralized zucchini with tomato sauce."
-    },
-
-    //balanced
-    {
-      name: "Grilled Salmon with Brown Rice",
-      diet: "balanced",
-      allergies: ["fish"],
-      calories: 830,
-      ingredients: ["salmon", "brown rice", "spinach", "lemon"],
-      nutrients: {
-        protein: "35g",
-        fat: "25g",
-        carbs: "70g"
-      },
-      instructions: "Grill salmon. Serve with steamed rice and spinach, topped with lemon juice."
-    },
-    {
-      name: "Turkey Wrap with Hummus",
-      diet: "balanced",
-      allergies: ["gluten"],
-      calories: 690,
-      ingredients: ["whole wheat wrap", "turkey slices", "lettuce", "hummus"],
-      nutrients: {
-        protein: "28g",
-        fat: "16g",
-        carbs: "55g"
-      },
-      instructions: "Layer wrap with turkey, lettuce, and hummus. Roll and serve."
-    },
-    {
-      name: "Grilled Chicken with Quinoa Salad",
-      diet: "balanced",
-      allergies: [],
-      calories: 890,
-      ingredients: ["grilled chicken", "quinoa", "cucumber", "tomato", "olive oil"],
-      nutrients: { protein: "40g", fat: "20g", carbs: "75g" },
-      instructions: "Grill chicken and serve with quinoa mixed with chopped vegetables and olive oil."
-    },
-    {
-      name: "Tofu Stir-fry with Brown Rice",
-      diet: "balanced",
-      allergies: ["soy"],
-      calories: 940,
-      ingredients: ["tofu", "brown rice", "broccoli", "carrots", "soy sauce"],
-      nutrients: { protein: "30g", fat: "18g", carbs: "90g" },
-      instructions: "Stir-fry tofu with vegetables and soy sauce. Serve with steamed brown rice."
-    },
-    {
-      name: "Lentil Curry with Basmati Rice",
-      diet: "balanced",
-      allergies: [],
-      calories: 870,
-      ingredients: ["lentils", "basmati rice", "onions", "tomatoes", "spices"],
-      nutrients: { protein: "25g", fat: "12g", carbs: "100g" },
-      instructions: "Cook lentils in spiced tomato-onion base and serve with basmati rice."
-    },
-    {
-      name: "Beef and Sweet Potato Bowl",
-      diet: "balanced",
-      allergies: [],
-      calories: 960,
-      ingredients: ["lean beef", "sweet potatoes", "kale", "olive oil"],
-      nutrients: { protein: "35g", fat: "22g", carbs: "85g" },
-      instructions: "Sauté beef and vegetables, serve with roasted sweet potatoes."
-    },
-    {
-      name: "Chickpea and Avocado Wrap",
-      diet: "balanced",
-      allergies: ["gluten"],
-      calories: 920,
-      ingredients: ["chickpeas", "avocado", "whole wheat wrap", "lettuce", "lemon juice"],
-      nutrients: { protein: "20g", fat: "25g", carbs: "85g" },
-      instructions: "Mash chickpeas and avocado, spread on wrap with lettuce, roll and serve."
-    },
-    {
-      name: "Egg White Omelette with Toast",
-      diet: "balanced",
-      allergies: [],
-      calories: 510,
-      ingredients: ["egg whites", "whole grain toast", "spinach"],
-      nutrients: { protein: "28g", fat: "10g", carbs: "45g" },
-      instructions: "Cook egg white omelet with spinach and serve with toast."
-    },
-    {
-      name: "Veggie Stir-Fry with Tofu",
-      diet: "balanced",
-      allergies: ["soy"],
-      calories: 540,
-      ingredients: ["tofu", "bell peppers", "broccoli", "olive oil", "brown rice"],
-      nutrients: { protein: "22g", fat: "15g", carbs: "65g" },
-      instructions: "Sauté tofu and veggies with olive oil. Serve over brown rice."
-    },
-    {
-      name: "Chicken Caesar Salad (Light)",
-      diet: "balanced",
-      allergies: ["dairy"],
-      calories: 610,
-      ingredients: ["grilled chicken", "romaine", "light Caesar dressing", "parmesan", "croutons"],
-      nutrients: { protein: "35g", fat: "18g", carbs: "30g" },
-      instructions: "Toss grilled chicken and salad with dressing and parmesan. Top with croutons."
-    },
-    {
-      name: "Vegetable Pasta with Marinara",
-      diet: "balanced",
-      allergies: ["gluten"],
-      calories: 590,
-      ingredients: ["whole grain pasta", "zucchini", "tomatoes", "onions", "marinara sauce"],
-      nutrients: { protein: "18g", fat: "12g", carbs: "75g" },
-      instructions: "Cook pasta and stir with sautéed vegetables and marinara sauce."
-    },
-    {
-      name: "Tuna Salad Sandwich",
-      diet: "balanced",
-      allergies: ["fish", "gluten"],
-      calories: 580,
-      ingredients: ["whole wheat bread", "canned tuna", "lettuce", "low-fat mayo"],
-      nutrients: { protein: "28g", fat: "14g", carbs: "48g" },
-      instructions: "Mix tuna with mayo, serve in sandwich with lettuce."
-    },
-    {
-      name: "Chickpea Quinoa Bowl",
-      diet: "balanced",
-      allergies: [],
-      calories: 600,
-      ingredients: ["quinoa", "chickpeas", "spinach", "cherry tomatoes", "lemon dressing"],
-      nutrients: { protein: "20g", fat: "16g", carbs: "65g" },
-      instructions: "Combine cooked quinoa and chickpeas with veggies and drizzle with dressing."
-    },
-    {
-      name: "Egg and Avocado Toast",
-      diet: "balanced",
-      allergies: ["eggs", "gluten"],
-      calories: 500,
-      ingredients: ["whole grain bread", "eggs", "avocado", "pepper"],
-      nutrients: { protein: "21g", fat: "22g", carbs: "45g" },
-      instructions: "Toast bread, top with mashed avocado and poached egg."
-    },
-    {
-      name: "Turkey Lettuce Wraps",
-      diet: "balanced",
-      allergies: [],
-      calories: 530,
-      ingredients: ["ground turkey", "lettuce leaves", "carrots", "onions", "spices"],
-      nutrients: { protein: "30g", fat: "15g", carbs: "25g" },
-      instructions: "Cook turkey with spices, wrap in lettuce with veggies."
-    }
-
-  ];
   await Meal.insertMany(meals)
     .then(() => {
       console.log("Sample meals added");
@@ -514,5 +2100,3 @@ mongoose.connect("mongodb://localhost:27017/nutriplan").then(async () => {
   console.log('Seed data added');
   mongoose.disconnect();
 });
-
-
