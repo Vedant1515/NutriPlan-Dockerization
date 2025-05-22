@@ -1,26 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard - NutriPlan</title>
-  <link rel="stylesheet" href="/css/styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Open Sans', sans-serif;
+      background-color: #ffffff;
+      scroll-behavior: smooth;
+    }
+
+    .dashboard-container {
+      display: flex;
+      height: 100vh;
+    }
+
+    .sidebar {
+      width: 240px;
+      background-color: #e6f4d7;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: fixed;
+      height: 100%;
+      top: 0;
+      left: 0;
+      overflow-y: auto;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+      z-index: 10;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-img {
+      width: 50px;
+      margin-bottom: 10px;
+    }
+
+    .user-info {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .user-avatar {
+      width: 60px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+
+    .sidebar-nav {
+      width: 100%;
+    }
+
+    .sidebar-nav a {
+      display: block;
+      padding: 10px 15px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: #333;
+      border-radius: 8px;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .sidebar-nav a.active,
+    .sidebar-nav a:hover {
+      background-color: #87c440;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .sidebar-nav a.logout {
+      background-color: transparent;
+      color: #333;
+      border: 1px solid #ccc;
+      text-align: center;
+      padding: 10px;
+      margin-top: 20px;
+    }
+
+    .sidebar-nav a.logout:hover {
+      background-color: #f8d7da;
+      color: #a94442;
+      border-color: #f5c6cb;
+    }
+
+    .main-content {
+      margin-left: 300px;
+      padding: 30px;
+      height: 100vh;
+      overflow-y: auto;
+      background-color: #ffffff;
+      width: calc(100% - 300px);
+    }
+
+    .generate-meal-plan {
+      text-align: center;
+      margin: 30px 0;
+    }
+
+    .generate-meal-plan h2 {
+      margin-bottom: 15px;
+      font-size: 1.8rem;
+      color: #333;
+    }
+
+    #generateBtn {
+      padding: 12px 24px;
+      font-weight: bold;
+      cursor: pointer;
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    #generateBtn:hover {
+      background-color: #45a049;
+      transform: translateY(-2px);
+    }
+
+    #generateBtn:active {
+      transform: translateY(0);
+    }
+
+    .date-nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #87c440;
+      color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      padding: 12px 20px;
+      margin: 20px auto;
+      width: fit-content;
+      gap: 20px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .date-nav button {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .date-nav button:hover {
+      transform: scale(1.2);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .section-header h3 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .view-all {
+      font-size: 14px;
+      color: #6ba327;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .view-all:hover {
+      color: #4a721b;
+      text-decoration: underline;
+    }
+
+    .recipe-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .recipe-card {
+      width: 340px;
+      max-width: 100%;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 8px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .recipe-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .recipe-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+    }
+
+    .recipe-card div {
+      padding: 15px;
+    }
+
+    .recipe-card h4 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .recipe-card p {
+      margin: 5px 0;
+    }
+
+    .recipe-card p span {
+      margin-right: 10px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 200px;
+      }
+
+      .main-content {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+        padding: 20px;
+      }
+
+      .recipe-card {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .recipe-list {
+        justify-content: center;
+      }
+
+      .recipe-card {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
-<body class="dashboard-body">
+<body>
   <div class="dashboard-container">
     <aside class="sidebar">
       <div class="logo">
-        <img src="/images/logo.png" alt="NutriPlan Logo" class="logo-img">
+        <img src="images/logo.png" alt="NutriPlan Logo" class="logo-img">
         <h2>NutriPlan</h2>
       </div>
       <div class="user-info">
-        <img src="/images/user.png" alt="User" class="user-avatar">
         <p>Hello! <span id="userName">User</span></p>
         <small id="userEmail">user@email.com</small>
       </div>
       <nav class="sidebar-nav">
-        <a href="/dashboard" class="active">Dashboard</a>
+        <a href="#" class="active">Dashboard</a>
         <a href="#">Meal Plans</a>
         <a href="#">Nutrition</a>
         <a href="#">Grocery List</a>
@@ -31,58 +285,69 @@
     </aside>
 
     <main class="main-content">
-      <div class="dashboard-metrics">
-        <div class="metric-box">
-          <p>Today's Calories</p>
-          <strong>1800 kcal</strong>
-        </div>
-        <div class="metric-box">
-          <p>Recipes Saved</p>
-          <strong>12</strong>
-        </div>
-        <div class="metric-box">
-          <p>Calorie Consumption</p>
-          <strong>2.5 Litres, 1300 kcal</strong>
-        </div>
-      </div>
-
       <section class="generate-meal-plan">
+        <h2>Your Personalised Meal Plan</h2>
         <button id="generateBtn">Generate Meal Plan</button>
+        <div class="date-nav">
+          <button id="prevDay">&#8249;</button>
+          <span id="dateLabel">Today</span>
+          <button id="nextDay">&#8250;</button>
+        </div>
       </section>
 
       <div id="mealPlanContainer" class="recipe-list"></div>
 
       <section class="recent-recipes">
-        <div class="section-header">
-          <h3>Recently added recipes</h3>
-          <a href="#" class="view-all">View all</a>
-        </div>
-        <div class="recipe-list">
-          <div class="recipe-card">
-            <img src="/images/salad.jpg" alt="Salad">
-            <div>
-              <h4>Carrot & Mixed Bean Salad with Tahini Dressing</h4>
-              <p><span>🕒 15 minutes</span> <span>🥕 10 ingredients</span></p>
-            </div>
-          </div>
+  <div class="section-header">
+    <h3>Recently added recipes</h3>
+    <a href="#" class="view-all">View all</a>
+  </div>
+  <div class="recipe-list">
 
-          <div class="recipe-card">
-            <img src="/images/horchata.jpg" alt="Horchata">
-            <div>
-              <h4>Horchata</h4>
-              <p><span>🕒 1 hour 30 minutes</span> <span>🥛 12 ingredients</span></p>
-            </div>
-          </div>
+    <div class="recipe-card">
+      <img src="images/tahini.jpg" alt="Salad">
+      <div>
+        <h4>Carrot & Mixed Bean Salad with Tahini Dressing</h4>
+        <p><span>🕒 15 minutes</span> <span>🥕 10 ingredients</span></p>
+      </div>
+    </div>
 
-          <div class="recipe-card">
-            <img src="/images/stew.jpg" alt="Stew">
-            <div>
-              <h4>Dominican Chicken Stew</h4>
-              <p><span>🕒 8 hours 20 minutes</span> <span>🍗 9 ingredients</span></p>
-            </div>
-          </div>
-        </div>
-      </section>
+    <div class="recipe-card">
+      <img src="images/avo.jpg" alt="Avocado Toast">
+      <div>
+        <h4>Avocado Toast with Poached Egg</h4>
+        <p><span>🕒 10 minutes</span> <span>🥑 6 ingredients</span></p>
+      </div>
+    </div>
+
+    <div class="recipe-card">
+      <img src="images/chick.jpg" alt="Chickpea Stew">
+      <div>
+        <h4>Spiced Chickpea & Spinach Stew</h4>
+        <p><span>🕒 30 minutes</span> <span>🍲 9 ingredients</span></p>
+      </div>
+    </div>
+
+    <div class="recipe-card">
+      <img src="images/berry.jpg" alt="Fruit Smoothie">
+      <div>
+        <h4>Mixed Berry Protein Smoothie</h4>
+        <p><span>🕒 5 minutes</span> <span>🍓 5 ingredients</span></p>
+      </div>
+    </div>
+
+    <div class="recipe-card">
+      <img src="images/tofu.jpg" alt="Tofu Wrap">
+      <div>
+        <h4>Grilled Tofu Veggie Wrap</h4>
+        <p><span>🕒 20 minutes</span> <span>🌯 8 ingredients</span></p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
     </main>
   </div>
 
@@ -99,39 +364,90 @@
       const userName = storedEmail.split("@")[0];
       document.getElementById("userName").textContent = userName.charAt(0).toUpperCase() + userName.slice(1);
 
+      // Generate real 7-day week
+      const weeklyDays = [];
+      const today = new Date();
+      for (let i = 0; i < 7; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() + i);
+        const formatted = date.toLocaleDateString('en-US', {
+          weekday: 'long',
+          month: 'long',
+          day: 'numeric'
+        });
+        weeklyDays.push(formatted);
+      }
+
+      let currentIndex = 0;
+
+      function updateMealPlanLabel() {
+        document.getElementById("dateLabel").textContent = weeklyDays[currentIndex];
+        const container = document.getElementById("mealPlanContainer");
+        container.innerHTML = `
+          <div class="recipe-card">
+            <img src="https://via.placeholder.com/300x180" alt="Meal">
+            <div>
+              <h4>Sample Meal for ${weeklyDays[currentIndex]}</h4>
+              <p>400 kcal</p>
+              <p>Ingredients: Sample A, Sample B</p>
+              <p>Instructions go here...</p>
+            </div>
+          </div>`;
+      }
+
+      document.getElementById("prevDay").addEventListener("click", () => {
+        currentIndex = (currentIndex - 1 + weeklyDays.length) % weeklyDays.length;
+        updateMealPlanLabel();
+      });
+
+      document.getElementById("nextDay").addEventListener("click", () => {
+        currentIndex = (currentIndex + 1) % weeklyDays.length;
+        updateMealPlanLabel();
+      });
+
+      // Set default
+      updateMealPlanLabel();
+
+      // Generate Meal Plan (preserved)
       document.getElementById("generateBtn").addEventListener("click", async () => {
         try {
-          const response = await fetch("/api/meals/generate", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
+          const mockMealPlan = [
+            {
+              name: "Breakfast Bowl",
+              calories: "350",
+              ingredients: ["oats", "banana", "almond milk", "berries", "honey"],
+              instructions: "Mix all ingredients in a bowl and let sit for 10 minutes. Top with fresh berries and a drizzle of honey."
             },
-            body: JSON.stringify({ email: storedEmail })
-          });
+            {
+              name: "Vegetable Stir Fry",
+              calories: "420",
+              ingredients: ["broccoli", "carrots", "bell peppers", "tofu", "soy sauce", "ginger"],
+              instructions: "Heat oil in a wok. Add vegetables and tofu. Stir fry for 5-7 minutes. Add sauce and serve with rice."
+            },
+            {
+              name: "Quinoa Salad",
+              calories: "380",
+              ingredients: ["quinoa", "cucumber", "tomatoes", "feta", "olive oil", "lemon"],
+              instructions: "Cook quinoa according to package instructions. Mix with chopped vegetables. Add dressing and toss well."
+            }
+          ];
 
-          const data = await response.json();
           const container = document.getElementById("mealPlanContainer");
           container.innerHTML = "";
-
-          if (data.mealPlan && data.mealPlan.length > 0) {
-            data.mealPlan.forEach(meal => {
-              const card = `
-                <div class="recipe-card">
-                  <img src="/images/placeholder.jpg" alt="${meal.name}">
-                  <div>
-                    <h4>${meal.name}</h4>
-                    <p>${meal.calories} kcal</p>
-                    <p>Ingredients: ${meal.ingredients.join(", ")}</p>
-                    <p>${meal.instructions.slice(0, 100)}...</p>
-                  </div>
+          mockMealPlan.forEach(meal => {
+            const card = `
+              <div class="recipe-card">
+                <img src="https://via.placeholder.com/300x180" alt="${meal.name}">
+                <div>
+                  <h4>${meal.name}</h4>
+                  <p>${meal.calories} kcal</p>
+                  <p>Ingredients: ${meal.ingredients.join(", ")}</p>
+                  <p>${meal.instructions.slice(0, 100)}...</p>
                 </div>
-              `;
-              container.innerHTML += card;
-            });
-          } else {
-            container.innerHTML = "<p>No meals found for your preferences.</p>";
-          }
-
+              </div>
+            `;
+            container.innerHTML += card;
+          });
         } catch (error) {
           console.error("Error generating meal plan:", error);
           alert("Failed to generate meal plan. Please try again.");
