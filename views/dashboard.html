@@ -25,8 +25,8 @@
         <a href="#">Nutrition</a>
         <a href="#">Grocery List</a>
         <a href="#">Profile</a>
-        <a href="#">Update Preferences</a>
-        <a href="/" class="logout">Log out</a>
+        <a href="/info?update=true">Update Preferences</a>
+        <a href="#" class="logout" onclick="logoutUser()">Log out</a>
       </nav>
     </aside>
 
@@ -46,12 +46,10 @@
         </div>
       </div>
 
-      <!-- Generate Meal Plan Section -->
       <section class="generate-meal-plan">
         <button id="generateBtn">Generate Meal Plan</button>
       </section>
 
-      <!-- Meal Plan Result -->
       <div id="mealPlanContainer" class="recipe-list"></div>
 
       <section class="recent-recipes">
@@ -88,13 +86,16 @@
     </main>
   </div>
 
-  <!-- Script for Email Handling and API Integration -->
   <script>
+    function logoutUser() {
+      localStorage.removeItem("nutriplanEmail");
+      window.location.href = "/";
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
       const storedEmail = localStorage.getItem("nutriplanEmail") || "user@email.com";
       document.getElementById("userEmail").textContent = storedEmail;
 
-      // Optional: update user name from email prefix
       const userName = storedEmail.split("@")[0];
       document.getElementById("userName").textContent = userName.charAt(0).toUpperCase() + userName.slice(1);
 
@@ -110,7 +111,7 @@
 
           const data = await response.json();
           const container = document.getElementById("mealPlanContainer");
-          container.innerHTML = ""; // Clear previous meals
+          container.innerHTML = "";
 
           if (data.mealPlan && data.mealPlan.length > 0) {
             data.mealPlan.forEach(meal => {
@@ -138,25 +139,5 @@
       });
     });
   </script>
-
-  <!-- Optional styling -->
-  <style>
-    .generate-meal-plan {
-      text-align: center;
-      margin: 30px 0;
-    }
-    #generateBtn {
-      padding: 10px 20px;
-      font-weight: bold;
-      cursor: pointer;
-      background-color: #4CAF50;
-      border: none;
-      color: white;
-      border-radius: 5px;
-    }
-    #generateBtn:hover {
-      background-color: #45a049;
-    }
-  </style>
 </body>
 </html>

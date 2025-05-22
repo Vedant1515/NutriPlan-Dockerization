@@ -93,18 +93,22 @@
         const data = await res.json();
 
         if (!res.ok) {
-          if (res.status === 404 || data.message.toLowerCase().includes("not found")) {
-            alert("User does not exist. Please register.");
-          } else {
-            alert(data.message || "Login failed.");
-          }
+          alert(data.message || "Login failed.");
           return;
         }
 
-         // ✅ Save email to localStorage
         localStorage.setItem("nutriplanEmail", body.email);
-        alert(data.message);
-        window.location.href = "/info";
+
+        // ✅ Check if user already submitted preferences
+        const infoRes = await fetch(`/api/user/get?email=${body.email}`);
+        const userData = await infoRes.json();
+
+        if (infoRes.ok && userData.exists) {
+          window.location.href = "/dashboard";
+        } else {
+          window.location.href = "/info";
+        }
+
       } catch (error) {
         console.error("Login error:", error);
         alert("An unexpected error occurred during login.");
@@ -138,7 +142,7 @@
       }
     });
 
-    // REGISTER PASSWORD VALIDATION ONLY
+    // REGISTER PASSWORD VALIDATION
     const registerPasswordInput = document.querySelector('#registerForm input[name="password"]');
     const rules = document.querySelectorAll('#password-rules li');
     const rulesBox = document.getElementById('password-rules');
