@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { generateMealPlan } = require('../controllers/mealController');
+const { generateMealPlan, regenerateMealPlan } = require('../controllers/mealController');
 
-router.post('/generate', generateMealPlan);
+// Properly mapped routes to match frontend
+router.post('/generate-plan', generateMealPlan);
+router.post('/regenerate-plan', regenerateMealPlan);
 
 module.exports = router;

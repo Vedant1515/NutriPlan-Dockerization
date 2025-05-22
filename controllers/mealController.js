@@ -4,88 +4,131 @@ const WeeklyMealPlan = require('../models/weeklyMealPlan');
 const { calculateBMR, adjustCalories } = require('../utils/calculation');
 
 function sumNutrients(meals) {
-    let totalProtein = 0, totalFat = 0, totalCarbs = 0;
+  let totalProtein = 0, totalFat = 0, totalCarbs = 0;
 
-    meals.forEach(meal => {
-        const parseGrams = val => parseFloat(val.replace('g', '').trim()) || 0;
-        totalProtein += parseGrams(meal.nutrients?.protein || "0g");
-        totalFat += parseGrams(meal.nutrients?.fat || "0g");
-        totalCarbs += parseGrams(meal.nutrients?.carbs || "0g");
-    });
+  meals.forEach(meal => {
+    const parseGrams = val => parseFloat(val.replace('g', '').trim()) || 0;
+    totalProtein += parseGrams(meal.nutrients?.protein || "0g");
+    totalFat += parseGrams(meal.nutrients?.fat || "0g");
+    totalCarbs += parseGrams(meal.nutrients?.carbs || "0g");
+  });
 
-    return {
-        protein: `${totalProtein}g`,
-        fat: `${totalFat}g`,
-        carbs: `${totalCarbs}g`
+  return {
+    protein: `${totalProtein}g`,
+    fat: `${totalFat}g`,
+    carbs: `${totalCarbs}g`
+  };
+}
+
+async function createWeeklyPlan(user, excludeMealIds = [], daysCount = 7) {
+  const bmr = calculateBMR(user);
+  const targetCalories = adjustCalories(bmr, user.goal, user.activityLevel);
+  const dailyCalorieTarget = targetCalories / user.mealsPerDay;
+  const baseMargin = 150;
+
+  const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const todayIndex = new Date().getDay();
+  const sortedDays = [...daysOfWeek.slice(todayIndex), ...daysOfWeek.slice(0, todayIndex)];
+
+  const weeklyPlan = [];
+  const recentDaysMeals = []; // Store meal IDs from previous 2 days
+
+  for (let i = 0; i < daysCount; i++) {
+    const day = sortedDays[i];
+
+    // Exclude meals used in the last 2 days + those passed into the function
+    const exclusionList = [...recentDaysMeals.flat(), ...excludeMealIds];
+
+    let query = {
+      diet: user.dietType,
+      allergies: { $nin: user.allergies },
+      calories: {
+        $lte: dailyCalorieTarget + baseMargin,
+        $gte: dailyCalorieTarget - baseMargin
+      },
+      _id: { $nin: exclusionList }
     };
+
+    let meals = await Meal.find(query).limit(user.mealsPerDay);
+
+    // Fallback if not enough meals found
+    if (meals.length < user.mealsPerDay) {
+      const fallbackQuery = {
+        diet: user.dietType,
+        calories: {
+          $lte: dailyCalorieTarget + 200,
+          $gte: dailyCalorieTarget - 200
+        },
+        _id: { $nin: exclusionList }
+      };
+      meals = await Meal.find(fallbackQuery).limit(user.mealsPerDay);
+    }
+
+    const todaysMealIds = meals.map(meal => meal._id.toString());
+
+    // Update rolling 2-day memory
+    recentDaysMeals.push(todaysMealIds);
+    if (recentDaysMeals.length > 2) {
+      recentDaysMeals.shift();
+    }
+
+    const totalCalories = meals.reduce((sum, meal) => sum + meal.calories, 0);
+    const totalNutrients = sumNutrients(meals);
+
+    weeklyPlan.push({
+      day,
+      meals,
+      totalCalories,
+      totalNutrients
+    });
+  }
+
+  return { weeklyPlan, targetCalories };
 }
 
 exports.generateMealPlan = async (req, res) => {
-    try {
-        const user = await User.findOne({ email: req.body.email }).exec();
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
+  try {
+    const user = await User.findOne({ email: req.body.email }).exec();
+    if (!user) return res.status(404).json({ message: 'User not found' });
 
-        const bmr = calculateBMR(user);
-        const targetCalories = adjustCalories(bmr, user.goal, user.activityLevel);
-        const dailyCalorieTarget = targetCalories / user.mealsPerDay;
-        const baseMargin = 150;
+    const { weeklyPlan, targetCalories } = await createWeeklyPlan(user);
 
-        // Get reordered days starting from today
-        const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const todayIndex = new Date().getDay();
-        const sortedDays = [...daysOfWeek.slice(todayIndex), ...daysOfWeek.slice(0, todayIndex)];
+    const savedPlan = new WeeklyMealPlan({
+      userEmail: user.email,
+      dailyPlans: weeklyPlan,
+      totalCaloriesPerDay: targetCalories
+    });
 
-        const weeklyPlan = [];
+    await savedPlan.save();
+    res.json({ message: 'Weekly meal plan generated', weeklyMealPlan: savedPlan });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to generate weekly meal plan', error: error.message });
+  }
+};
 
-        for (let day of sortedDays) {
-            let query = {
-                diet: user.dietType,
-                allergies: { $nin: user.allergies },
-                calories: {
-                    $lte: dailyCalorieTarget + baseMargin,
-                    $gte: dailyCalorieTarget - baseMargin
-                }
-            };
+exports.regenerateMealPlan = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email }).exec();
+    if (!user) return res.status(404).json({ message: 'User not found' });
 
-            let meals = await Meal.find(query).limit(user.mealsPerDay);
+    const previousPlan = await WeeklyMealPlan.findOne({ userEmail: user.email });
+    const previousMealIds = previousPlan ? previousPlan.dailyPlans.flatMap(day => day.meals.map(m => m._id.toString())) : [];
 
-            // Fallback logic
-            if (meals.length < user.mealsPerDay) {
-                let fallbackQuery = {
-                    diet: user.dietType,
-                    calories: {
-                        $lte: dailyCalorieTarget + 200,
-                        $gte: dailyCalorieTarget - 200
-                    }
-                };
-                meals = await Meal.find(fallbackQuery).limit(user.mealsPerDay);
-            }
+    await WeeklyMealPlan.deleteMany({ userEmail: user.email });
 
-            const totalCalories = meals.reduce((sum, meal) => sum + meal.calories, 0);
-            const totalNutrients = sumNutrients(meals);
+    const { weeklyPlan, targetCalories } = await createWeeklyPlan(user, previousMealIds);
 
-            weeklyPlan.push({
-                day,
-                meals,
-                totalCalories,
-                totalNutrients
-            });
-        }
+    const savedPlan = new WeeklyMealPlan({
+      userEmail: user.email,
+      dailyPlans: weeklyPlan,
+      totalCaloriesPerDay: targetCalories
+    });
 
-        const savedPlan = new WeeklyMealPlan({
-            userEmail: user.email,
-            dailyPlans: weeklyPlan,
-            totalCaloriesPerDay: targetCalories
-        });
-
-        await savedPlan.save();
-
-        res.json({ message: 'Weekly meal plan generated', weeklyMealPlan: savedPlan });
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Failed to generate weekly meal plan', error: error.message });
-    }
+    await savedPlan.save();
+    res.json({ message: 'Weekly meal plan regenerated', weeklyMealPlan: savedPlan });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to regenerate meal plan', error: error.message });
+  }
 };

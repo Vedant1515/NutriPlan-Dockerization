@@ -1,5 +1,7 @@
 const express = require('express');
 const User = require('../models/user');
+const WeeklyMealPlan = require('../models/weeklyMealPlan'); // ✅ Import meal plan model
+
 const router = express.Router();
 
 // ✅ Save user preferences
@@ -42,7 +44,7 @@ router.post('/save', async (req, res) => {
   }
 });
 
-// ✅ Get whether preferences are filled
+// ✅ Get whether preferences are filled + latest meal plan
 router.get('/get', async (req, res) => {
   const { email } = req.query;
 
@@ -51,7 +53,7 @@ router.get('/get', async (req, res) => {
   }
 
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).lean();
     if (!user) return res.json({ exists: false });
 
     const hasPreferences = (
@@ -59,9 +61,18 @@ router.get('/get', async (req, res) => {
       user.dietType && user.mealsPerDay && user.goal && user.activityLevel
     );
 
-    res.json({ exists: !!hasPreferences });
+    // ✅ Get latest weekly meal plan for the user
+    const plan = await WeeklyMealPlan.findOne({ userEmail: email })
+      .sort({ createdAt: -1 })
+      .lean();
+
+    res.json({
+      exists: !!hasPreferences,
+      user,
+      plan  // ✅ Now frontend can access data.plan.dailyPlans
+    });
   } catch (err) {
-    console.error('Error checking user existence:', err);
+    console.error('Error checking user or fetching plan:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
