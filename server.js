@@ -37,6 +37,10 @@ app.get('/register', (req, res) => res.sendFile(path.join(__dirname, 'views', 'r
 app.get('/info', (req, res) => res.sendFile(path.join(__dirname, 'views', 'info.html')));
 app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'views', 'dashboard.html')));
 app.get('/faq', (req, res) => res.sendFile(path.join(__dirname, 'views', 'faq.html')));
+app.get('/grocerylist', (req, res) => 
+  res.sendFile(path.join(__dirname, 'views', 'grocerylist.html'))
+);
+
 
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
