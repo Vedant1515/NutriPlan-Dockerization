@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Grocery List - NutriPlan</title>
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: #f0f4f8;
+      margin: 0;
+      padding: 50px 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #388e3c;
+      font-size: 2.4rem;
+      margin-bottom: 50px;
+      letter-spacing: 0.5px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+      max-width: 1300px;
+      margin: auto;
+    }
+
+    .category {
+      background: linear-gradient(to bottom right, #ffffff, #f5fff5);
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      padding: 25px 20px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .category:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .category h2 {
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+      color: #2e7d32;
+      text-align: center;
+      border-bottom: 2px dashed #cdeacd;
+      padding-bottom: 8px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      font-size: 1.05rem;
+      padding: 12px 10px;
+      margin: 6px 0;
+      border-radius: 8px;
+      background-color: #f9fef9;
+      box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.05);
+      transition: background-color 0.3s;
+    }
+
+    li:hover {
+      background-color: #e8f5e9;
+    }
+
+    .error {
+      text-align: center;
+      color: #d32f2f;
+      font-size: 1.1rem;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 500px) {
+      h1 {
+        font-size: 1.8rem;
+        padding: 0 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Plan. Shop. Cook. – Weekly Grocery List</h1>
+
+  <div id="grid" class="grid">
+    <div class="category">
+      <h2>Protein</h2>
+      <ul id="protein-list"></ul>
+    </div>
+    <div class="category">
+      <h2>Carbs</h2>
+      <ul id="carbs-list"></ul>
+    </div>
+    <div class="category">
+      <h2>Fats</h2>
+      <ul id="fats-list"></ul>
+    </div>
+    <div class="category">
+      <h2>Fiber</h2>
+      <ul id="fiber-list"></ul>
+    </div>
+  </div>
+
+  <div class="error" id="errorMsg"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const email = localStorage.getItem("nutriplanEmail");
+      const errorMsg = document.getElementById("errorMsg");
+
+      if (!email) {
+        errorMsg.textContent = "User not logged in.";
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/grocery-list?email=${email}`);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || "Failed to load grocery list");
+
+        const categories = ['protein', 'carbs', 'fats', 'fiber'];
+        categories.forEach(cat => {
+          const listEl = document.getElementById(`${cat}-list`);
+          if (!listEl) return;
+          listEl.innerHTML = "";
+
+          if (data.groceryList[cat] && data.groceryList[cat].length > 0) {
+            data.groceryList[cat].forEach(item => {
+              const li = document.createElement('li');
+              li.textContent = `${item.item.charAt(0).toUpperCase() + item.item.slice(1)} – ${item.quantity}`;
+              listEl.appendChild(li);
+            });
+          } else {
+            listEl.innerHTML = "<li>No items</li>";
+          }
+        });
+
+      } catch (err) {
+        errorMsg.textContent = err.message;
+        console.error("Error loading grocery list:", err);
+      }
+    });
+  </script>
+</body>
+</html>
