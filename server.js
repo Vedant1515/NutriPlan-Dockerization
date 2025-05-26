@@ -4,14 +4,14 @@ const session = require('express-session');
 const passport = require('passport');
 const path = require('path');
 
-// Routes
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const mealRoutes = require('./routes/mealRoutes'); // ✅ Meal plan routes
 const exportMealPlanRoutes = require('./routes/exportMealPlan');
 const initPassport = require('./config/passport');
+const groceryRoutes = require('./routes/groceryRoutes'); // ✅ Grocery list route
 
-const app = express();
+const app = express(); // ✅ MUST be defined before any app.use()
 
 // Connect to MongoDB
 mongoose.connect("mongodb://localhost:27017/nutriplan")
@@ -30,10 +30,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 initPassport(passport);
 
-// Static assets (JS, CSS, images, HTML)
+// Static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Static HTML Page Routes
+// Static HTML routes
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'views', 'homepage.html')));
 app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'views', 'login.html')));
 app.get('/register', (req, res) => res.sendFile(path.join(__dirname, 'views', 'register.html')));
@@ -48,13 +48,14 @@ app.use('/api/user', userRoutes);
 app.use('/api/meal', mealRoutes); // ✅ Enables /api/meal/generate-plan and /regenerate-plan
  
 app.use('/api/mealplan', exportMealPlanRoutes);
- 
 
-// Catch-all fallback for undefined routes
+app.use('/api', groceryRoutes); // ✅ NOW correctly placed after `app` is declared
+
+// 404 Fallback
 app.use((req, res) => {
   res.status(404).send('<h1>404 Not Found</h1>');
 });
 
-// Start Server
+// Start server
 const PORT = 3000;
 app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
