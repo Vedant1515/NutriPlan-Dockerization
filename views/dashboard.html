@@ -98,7 +98,7 @@
       font-size: 1.8rem;
       color: #333;
     }
-    #generateBtn {
+    #generateBtn, #exportPdfBtn {
       padding: 12px 24px;
       font-weight: bold;
       cursor: pointer;
@@ -108,12 +108,13 @@
       border-radius: 5px;
       font-size: 16px;
       transition: background-color 0.3s, transform 0.2s;
+      margin: 5px;
     }
-    #generateBtn:hover {
+    #generateBtn:hover, #exportPdfBtn:hover {
       background-color: #45a049;
       transform: translateY(-2px);
     }
-    #generateBtn:active {
+    #generateBtn:active, #exportPdfBtn:active {
       transform: translateY(0);
     }
     .date-nav {
@@ -251,6 +252,7 @@
       <section class="generate-meal-plan">
         <h2>Your Personalised Meal Plan</h2>
         <button id="generateBtn">Generate Meal Plan</button>
+        <button id="exportPdfBtn">Export as PDF</button>
         <div class="date-nav">
           <button id="prevDay">&#8249;</button>
           <span id="dateLabel">Today</span>
@@ -273,7 +275,6 @@
     const email = localStorage.getItem("nutriplanEmail");
     if (!email) return alert("User not logged in.");
 
-    // Sidebar name/email setup
     document.getElementById("userEmail").textContent = email;
     const userName = email.split("@")[0];
     document.getElementById("userName").textContent = userName.charAt(0).toUpperCase() + userName.slice(1);
@@ -369,12 +370,32 @@
       await generateOrRegeneratePlan(isRegenerate);
     });
 
+    document.getElementById("exportPdfBtn").addEventListener("click", async () => {
+      try {
+        const res = await fetch("/api/mealplan/export", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email })
+        });
+        if (!res.ok) throw new Error("Export failed");
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "NutriPlan_Meal_Plan.pdf";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      } catch (err) {
+        alert("Error exporting PDF: " + err.message);
+      }
+    });
+
     async function loadLatestPlan() {
       try {
         const res = await fetch(`/api/user/get?email=${email}`);
         const data = await res.json();
         if (data?.exists) {
-          // Fetch latest meal plan from server (optional enhancement)
           const planRes = await fetch(`/api/meal/plan?email=${email}`);
           const planJson = await planRes.json();
           if (planRes.ok && planJson.weeklyMealPlan?.dailyPlans?.length) {
