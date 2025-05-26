@@ -8,6 +8,7 @@ const path = require('path');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const mealRoutes = require('./routes/mealRoutes'); // ✅ Meal plan routes
+const exportMealPlanRoutes = require('./routes/exportMealPlan');
 const initPassport = require('./config/passport');
 
 const app = express();
@@ -45,6 +46,9 @@ app.get('/grocerylist', (req, res) => res.sendFile(path.join(__dirname, 'views',
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/meal', mealRoutes); // ✅ Enables /api/meal/generate-plan and /regenerate-plan
+ 
+app.use('/api/mealplan', exportMealPlanRoutes);
+ 
 
 // Catch-all fallback for undefined routes
 app.use((req, res) => {
