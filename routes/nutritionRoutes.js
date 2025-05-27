@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const NutritionEntry = require('../models/nutritionEntry');
+const nutritionEntry = require('../models/nutritionEntry');
 
 // POST /api/nutrition - Create a new nutrition entry
 router.post('/save', async (req, res) => {
@@ -10,7 +10,7 @@ router.post('/save', async (req, res) => {
       return res.status(400).json({ message: 'All fields are required' });
     }
 
-    const newEntry = new NutritionEntry({ email, date, foodItem, calories, protein, carbs, fats });
+    const newEntry = new nutritionEntry({ email, date, foodItem, calories, protein, carbs, fats });
     await newEntry.save();
     res.status(201).json({ message: 'Nutrition entry created', entry: newEntry });
   } catch (error) {
@@ -28,7 +28,7 @@ router.get('/list', async (req, res) => {
   }
 
   try {
-    const entries = await NutritionEntry.find({ email }).sort({ date: -1 });
+    const entries = await nutritionEntry.find({ email }).sort({ date: -1 });
     res.status(200).json(entries);
   } catch (error) {
     console.error('Error fetching nutrition entries:', error);
