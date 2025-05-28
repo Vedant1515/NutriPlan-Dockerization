@@ -7,6 +7,8 @@ require('dotenv').config(); // Load environment variables
 
 const authRoutes = require('./routes/authroutes');
 const userRoutes = require('./routes/userRoutes');
+const exportMealPlanRoutes = require('./routes/exportMealPlan');
+const nutritionRoutes = require('./routes/nutritionRoutes'); 
 const mealRoutes = require('./routes/mealroutes');
 const initPassport = require('./config/passport');
 const groceryRoutes = require('./routes/groceryRoutes');
@@ -42,6 +44,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'views', 'homepage.html')));
 app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'views', 'login.html')));
 app.get('/register', (req, res) => res.sendFile(path.join(__dirname, 'views', 'register.html')));
+app.get('/nutrition', (req, res) => res.sendFile(path.join(__dirname, 'views', 'nutrition.html')));
+app.get('/grocerylist', (req, res) => res.sendFile(path.join(__dirname, 'views', 'grocerylist.html')));
+
 app.get('/info', (req, res) => res.sendFile(path.join(__dirname, 'views', 'info.html')));
 app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'views', 'dashboard.html')));
 app.get('/faq', (req, res) => res.sendFile(path.join(__dirname, 'views', 'faq.html')));
@@ -52,6 +57,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/meal', mealRoutes);
 app.use('/api', groceryRoutes);
+app.use('/api/nutrition', nutritionRoutes);
+app.use('/api/mealplan', exportMealPlanRoutes);
 
 app.get('/api/student', (req, res) => {
   res.json({
