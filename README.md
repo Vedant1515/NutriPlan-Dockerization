@@ -57,6 +57,35 @@ Before running this project locally, ensure the following tools and technologies
 
    Open your browser and navigate to: `http://localhost:3000`
 
+## Dockerisation (SIT725 HD Task)
+
+To run NutriPlan in a Dockerised environment:
+
+### Docker Prerequisites
+
+- Docker and Docker Compose must be installed.
+
+### Build and Run the Containers
+
+```bash
+docker-compose up --build
+```
+
+This command builds the application container and runs both the app and MongoDB containers.
+
+### Access Points
+
+- Application: [http://localhost:3000](http://localhost:3000)
+- Student ID Endpoint: [http://localhost:3000/api/student](http://localhost:3000/api/student)
+
+Example output:
+```json
+{
+  "name": "Vedant Ashishkumar Pandya",
+  "studentId": "s225094537"
+}
+```
+
 ## Technology Stack
 
 - **Frontend**: HTML, CSS, JavaScript  

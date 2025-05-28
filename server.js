@@ -3,21 +3,25 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const passport = require('passport');
 const path = require('path');
+require('dotenv').config(); // Load environment variables
 
 const authRoutes = require('./routes/authroutes');
 const userRoutes = require('./routes/userRoutes');
-const mealRoutes = require('./routes/mealroutes'); 
-const exportMealPlanRoutes = require('./routes/exportMealPlan');
-const nutritionRoutes = require('./routes/nutritionRoutes'); 
+const mealRoutes = require('./routes/mealroutes');
 const initPassport = require('./config/passport');
-const groceryRoutes = require('./routes/groceryRoutes'); 
+const groceryRoutes = require('./routes/groceryRoutes');
 
-const app = express(); 
+const app = express();
 
-// Connect to MongoDB
-mongoose.connect("mongodb://localhost:27017/nutriplan")
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB connection error:', err));
+// ✅ MongoDB URI from environment, fallback to Docker Mongo service
+const mongoURI = process.env.MONGODB_URI || 'mongodb://mongo:27017/nutriplan_db';
+
+mongoose.connect(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('MongoDB connected'))
+.catch(err => console.error('MongoDB connection error:', err));
 
 // Middleware
 app.use(express.json());
@@ -34,12 +38,11 @@ initPassport(passport);
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Static HTML routes
+// Static HTML Routes
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'views', 'homepage.html')));
 app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'views', 'login.html')));
 app.get('/register', (req, res) => res.sendFile(path.join(__dirname, 'views', 'register.html')));
 app.get('/info', (req, res) => res.sendFile(path.join(__dirname, 'views', 'info.html')));
-app.get('/nutrition', (req, res) => res.sendFile(path.join(__dirname, 'views', 'nutrition.html')));
 app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'views', 'dashboard.html')));
 app.get('/faq', (req, res) => res.sendFile(path.join(__dirname, 'views', 'faq.html')));
 app.get('/grocerylist', (req, res) => res.sendFile(path.join(__dirname, 'views', 'grocerylist.html')));
@@ -47,12 +50,15 @@ app.get('/grocerylist', (req, res) => res.sendFile(path.join(__dirname, 'views',
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
-app.use('/api/meal', mealRoutes); // Enables /api/meal/generate-plan and /regenerate-plan
-app.use('/api/nutrition', nutritionRoutes);
- 
-app.use('/api/mealplan', exportMealPlanRoutes);
-
+app.use('/api/meal', mealRoutes);
 app.use('/api', groceryRoutes);
+
+app.get('/api/student', (req, res) => {
+  res.json({
+    name: "Vedant Ashishkumar Pandya",
+    studentId: "s224698427"
+  });
+});
 
 // 404 Fallback
 app.use((req, res) => {
@@ -60,5 +66,5 @@ app.use((req, res) => {
 });
 
 // Start server
-const PORT = 3000;
-app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

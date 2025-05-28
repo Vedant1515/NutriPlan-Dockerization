@@ -1,11 +1,20 @@
-
 const mongoose = require('mongoose');
 const Meal = require('./models/meals');
+require('dotenv').config();
 
-mongoose.connect("mongodb://localhost:27017/nutriplan").then(async () => {
-  console.log("Connected to MongoDB");
+// MongoDB URI from .env or fallback
+const mongoURI = process.env.MONGODB_URI || 'mongodb://mongo:27017/nutriplan';
 
-  const meals = [
+async function seedDatabase() {
+  try {
+    await mongoose.connect(mongoURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
+    console.log('✅ Connected to MongoDB');
+
+      const meals = [
   {
     "name": "Paleo Power Meal 101",
     "diet": "paleo",
@@ -2091,12 +2100,23 @@ mongoose.connect("mongodb://localhost:27017/nutriplan").then(async () => {
   }
 ];
 
-  await Meal.insertMany(meals)
-    .then(() => {
-      console.log("Sample meals added");
-      mongoose.connection.close();
-    })
-    .catch(err => console.error(err));
-  console.log('Seed data added');
-  mongoose.disconnect();
-});
+    // Optional: clear existing meals first
+    await Meal.deleteMany({});
+    console.log('🧹 Existing meals removed');
+
+    await Meal.insertMany(meals);
+    console.log(`🍽️ ${meals.length} meals added to database`);
+
+  } catch (err) {
+    console.error('❌ Error during seeding:', err);
+  } finally {
+    mongoose.connection.close();
+    console.log('🔌 MongoDB connection closed');
+  }
+}
+
+seedDatabase();
+
+
+
+  
